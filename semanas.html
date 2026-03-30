@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Semanas - Base de Datos II</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Segoe UI',sans-serif;
+background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+            url("inge.jpg");
+background-size:cover;
+background-position:center;
+color:white;
+}
+
+/* NAVBAR */
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 70px;
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* LOGO CON IMAGEN */
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo-img{
+width:50px;
+height:50px;
+object-fit:contain;
+}
+
+.logo h2{ font-size:26px; }
+.logo p{ font-size:16px; opacity:0.8; }
+.logo span{ font-size:13px; color:#bbb; }
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:30px;
+font-weight:600;
+font-size:18px;
+position:relative;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+width:0%;
+height:2px;
+background:#00d4ff;
+left:0;
+bottom:-5px;
+transition:0.3s;
+}
+
+nav a:hover::after{ width:100%; }
+nav .active{ color:#00d4ff; }
+
+/* CONTENEDOR */
+.semanas-container{
+width:85%;
+margin:40px auto;
+background: rgba(255,255,255,0.08);
+backdrop-filter: blur(15px);
+padding:30px;
+border-radius:25px;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+}
+
+/* TARJETAS */
+.card{
+background: rgba(255,255,255,0.1);
+border-radius:18px;
+padding:20px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.modal-content{
+background: rgba(255,255,255,0.1);
+backdrop-filter: blur(18px);
+padding:40px;
+width:60%;
+max-width:700px;
+border-radius:25px;
+text-align:center;
+color:white;
+position:relative;
+}
+
+/* CERRAR */
+.close{
+position:absolute;
+top:15px;
+right:20px;
+font-size:20px;
+cursor:pointer;
+}
+
+/* BOTONES */
+.btn-ver{
+background:#00c3ff;
+padding:8px 12px;
+border-radius:8px;
+color:white;
+text-decoration:none;
+margin-right:8px;
+}
+
+.btn-descargar{
+background:#22c55e;
+padding:8px 12px;
+border-radius:8px;
+color:white;
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+<div class="logo">
+
+<!-- IMAGEN UPLA -->
+<img src="upla.png" alt="UPLA" class="logo-img">
+
+<div>
+<h2>Base de Datos II</h2>
+<p>Guadalupe Carbajal Emanuel Gaddiel</p>
+<span>UPLA - Huancayo</span>
+</div>
+
+</div>
+
+<nav>
+<a href="index.html">🏠 Inicio</a>
+<a href="#" class="active">📅 Semanas</a>
+<a href="contacto.html">✉️ Contacto</a>
+<a href="login.html">🔒 Login</a>
+</nav>
+</header>
+
+<section class="semanas-container">
+
+<h1 style="text-align:center;">Actividades por Semanas</h1>
+
+<div class="grid">
+
+<script>
+for(let i=1;i<=16;i++){
+document.write(`
+<div class="card" onclick="abrirModal(${i})">
+<h3>Semana ${i}</h3>
+<p>Ver archivos</p>
+</div>
+`)
+}
+</script>
+
+</div>
+
+</section>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-content">
+
+<span class="close" onclick="cerrarModal()">✖</span>
+
+<h2 id="tituloModal"></h2>
+<div id="linksModal"></div>
+
+</div>
+</div>
+
+<script>
+
+const BASE_URL = "https://raw.githubusercontent.com/GuadalupeEmanuel/BASE-DE-DATOS-II/main/";
+
+/* ARCHIVOS */
+const semanas = {
+1: [
+    {nombre:"Informe PDF", archivo:"doc1.pdf"},
+    {nombre:"Trabajo Word", archivo:"doc2.docx"}
+],
+14: [
+    {nombre:"Proyecto Final", archivo:"proyecto_final.pdf"}
+]
+};
+
+function abrirModal(semana){
+
+const modal = document.getElementById("modal")
+modal.style.display = "flex"
+
+const ruta = BASE_URL + "semana" + semana + "/"
+let contenido=""
+
+if(semanas[semana]){
+
+semanas[semana].forEach(file=>{
+
+let url = ruta + file.archivo
+
+contenido+=`
+<div style="
+margin:15px 0;
+padding:15px;
+background:rgba(255,255,255,0.08);
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+">
+
+<div style="text-align:left;">
+<p style="margin:0;font-weight:bold;">📄 ${file.nombre}</p>
+<small style="color:#ccc;">${file.archivo}</small>
+</div>
+
+<div>
+<a href="${url}" target="_blank" class="btn-ver">👁 Ver</a>
+<a href="${url}" download class="btn-descargar">📥 Descargar</a>
+</div>
+
+</div>
+`
+
+})
+
+}else{
+contenido="<p>No hay archivos en esta semana</p>"
+}
+
+document.getElementById("tituloModal").innerHTML="📅 Semana "+semana
+document.getElementById("linksModal").innerHTML=contenido
+
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display="none"
+}
+
+window.onclick = function(e){
+const modal = document.getElementById("modal")
+if(e.target === modal){
+modal.style.display="none"
+}
+}
+
+</script>
+
+</body>
+</html>
