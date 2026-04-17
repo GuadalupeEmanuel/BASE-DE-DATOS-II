@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,7 +31,7 @@ background-position:center;
 color:var(--gris-texto);
 }
 
-/* NAVBAR (TU ORIGINAL) */
+/* NAVBAR */
 .navbar{
 display:flex;
 justify-content:space-between;
@@ -140,10 +141,78 @@ padding:18px;
 text-align:center;
 cursor:pointer;
 transition: all 0.3s ease;
+border:1px solid rgba(147,197,253,0.15);
+backdrop-filter: blur(8px);
+position:relative;
+overflow:hidden;
+}
+
+.card h3{
+margin-bottom:5px;
+font-size:18px;
+color:#e0f2fe;
+}
+
+.card p{
+font-size:13px;
+opacity:0.7;
+}
+
+.card::before{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background: linear-gradient(120deg, transparent, rgba(147,197,253,0.4), transparent);
+transform: rotate(25deg);
+opacity:0;
+transition:0.5s;
+}
+
+.card:hover::before{
+opacity:1;
+animation: neonMove 2s linear infinite;
 }
 
 .card:hover{
-transform:scale(1.05);
+transform: translateY(-5px) scale(1.02);
+box-shadow:
+0 0 10px rgba(147,197,253,0.3),
+0 0 20px rgba(147,197,253,0.25),
+0 0 35px rgba(147,197,253,0.2);
+border:1px solid rgba(147,197,253,0.5);
+}
+
+@keyframes neonMove{
+0%{ transform: translateX(-100%) rotate(25deg); }
+100%{ transform: translateX(100%) rotate(25deg); }
+}
+
+/* UNIDADES */
+.unidad-titulo{
+grid-column: span 4;
+margin-top:30px;
+margin-bottom:15px;
+padding:14px;
+background: linear-gradient(90deg, rgba(147,197,253,0.15), rgba(147,197,253,0.05));
+border:1px solid rgba(147,197,253,0.3);
+border-radius:10px;
+font-size:22px;
+font-weight:700;
+color:#e0f2fe;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+text-align:center;
+letter-spacing:1px;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.unidad-titulo::before{
+content:"📘";
 }
 
 /* MODAL */
@@ -175,8 +244,9 @@ position:relative;
 position:absolute;
 top:15px;
 right:20px;
-cursor:pointer;
 font-size:20px;
+cursor:pointer;
+color:var(--azul-pastel);
 }
 
 /* BOTONES */
@@ -199,7 +269,7 @@ text-decoration:none;
 border:1px solid rgba(255,255,255,0.2);
 }
 
-/* ITEMS */
+/* ITEMS MODAL */
 .modal-item{
 margin:15px 0;
 padding:15px;
@@ -208,6 +278,10 @@ border-radius:12px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+}
+
+.modal-item small{
+color:#9ca3af;
 }
 
 </style>
@@ -236,7 +310,7 @@ align-items:center;
 <section class="semanas-container">
 <h1>Actividades por Semanas</h1>
 
-<div class="grid">
+<div class="grid" id="grid">
 <script>
 for(let i=1;i<=16;i++){
 document.write(`
@@ -262,35 +336,50 @@ document.write(`
 
 <script>
 
-/* 🔥 CDN QUE SÍ FUNCIONA */
+/* CDN CORRECTO */
 const BASE_URL = "https://cdn.jsdelivr.net/gh/GuadalupeEmanuel/BASE-DE-DATOS-II@main/";
 
-/* 🔥 SEMANA 1 CORRECTA */
+/* ARCHIVOS */
 const semanas = {
+
 1: [
     {
         nombre: "ARQUITECTURA DE BASE DE DATOS",
         archivo: "semana%201/semana%201.pdf"
     }
+],
+
+2: [
+    {
+        nombre: "Modelo Entidad Relación",
+        archivo: "semana%202/archivo.pdf"
+    }
+],
+
+14: [
+    {
+        nombre: "Proyecto Final",
+        archivo: "semana%2014/proyecto_final.pdf"
+    }
 ]
+
 };
 
 function abrirModal(semana){
-
 const modal = document.getElementById("modal")
 modal.style.display = "flex"
 
-let contenido=""
+let contenido = ""
 
 if(semanas[semana]){
 semanas[semana].forEach(file=>{
-
 let url = BASE_URL + file.archivo
 
-contenido+=`
+contenido += `
 <div class="modal-item">
-<div>
+<div style="text-align:left;">
 <p><b>📄 ${file.nombre}</b></p>
+<small>${file.archivo}</small>
 </div>
 <div>
 <a href="${url}" target="_blank" class="btn-ver">👁 Ver</a>
@@ -300,25 +389,60 @@ contenido+=`
 `
 })
 }else{
-contenido="<p>No hay archivos en esta semana</p>"
+contenido = "<p>No hay archivos en esta semana</p>"
 }
 
-document.getElementById("tituloModal").innerHTML="📅 Semana "+semana
-document.getElementById("linksModal").innerHTML=contenido
+document.getElementById("tituloModal").innerHTML = "📅 Semana " + semana
+document.getElementById("linksModal").innerHTML = contenido
 }
 
 function cerrarModal(){
-document.getElementById("modal").style.display="none"
+document.getElementById("modal").style.display = "none"
 }
 
-window.onclick=function(e){
-const modal=document.getElementById("modal")
-if(e.target===modal){
-modal.style.display="none"
+window.onclick = function(e){
+const modal = document.getElementById("modal")
+if(e.target === modal){
+modal.style.display = "none"
 }
 }
+
+/* ORGANIZAR UNIDADES */
+window.addEventListener("load", ()=>{
+
+const grid = document.querySelector(".grid")
+const cards = document.querySelectorAll(".card")
+
+const unidades = [
+{nombre:"Unidad 1", rango:[1,4]},
+{nombre:"Unidad 2", rango:[5,8]},
+{nombre:"Unidad 3", rango:[9,12]},
+{nombre:"Unidad 4", rango:[13,16]}
+]
+
+let nuevoContenido = ""
+
+unidades.forEach(u => {
+
+nuevoContenido += `<div class="unidad-titulo">${u.nombre}</div>`
+
+cards.forEach((card,index)=>{
+let semana = index + 1
+
+if(semana >= u.rango[0] && semana <= u.rango[1]){
+nuevoContenido += card.outerHTML
+}
+
+})
+
+})
+
+grid.innerHTML = nuevoContenido
+
+})
 
 </script>
 
 </body>
 </html>
+```
