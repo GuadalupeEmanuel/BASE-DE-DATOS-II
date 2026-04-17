@@ -6,34 +6,70 @@
 
 <style>
 
+/* VARIABLES (MISMA PALETA GLOBAL) */
+:root{
+--azul-pastel:#93c5fd;
+--azul-medio:#60a5fa;
+--gris-texto:#d1d5db;
+}
+
+/* RESET */
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 }
 
-/* FONDO IGUAL */
+/* FONDO */
 body{
 font-family:'Segoe UI',sans-serif;
-background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+background: linear-gradient(rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.85)),
             url("inge.jpg");
 background-size:cover;
 background-position:center;
-color:white;
+color:var(--gris-texto);
 }
 
-/* NAVBAR IGUAL EXACTA */
+/* NAVBAR */
 .navbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:20px 60px;
-background: rgba(255, 255, 255, 0.05);
+background: rgba(255, 255, 255, 0.08);
 backdrop-filter: blur(12px);
-border-bottom: 1px solid rgba(255,255,255,0.1);
+
+/* quitamos línea normal */
+border-bottom:none;
+
+position:relative;
 }
 
-/* LOGO CON IMAGEN */
+/* 🔥 NEÓN SOLO EN LA LÍNEA */
+.navbar::after{
+content:"";
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:2px;
+
+background: linear-gradient(90deg, transparent, var(--azul-pastel), transparent);
+background-size:200%;
+
+box-shadow:
+0 0 8px var(--azul-pastel),
+0 0 15px rgba(147,197,253,0.6);
+
+animation: neonLine 3s linear infinite;
+}
+
+@keyframes neonLine{
+0%{ background-position:-200% 0; }
+100%{ background-position:200% 0; }
+}
+
+/* LOGO */
 .logo{
 display:flex;
 align-items:center;
@@ -53,6 +89,7 @@ flex-direction:column;
 
 .logo h2{
 font-size:22px;
+color:var(--azul-pastel);
 margin-bottom:5px;
 }
 
@@ -64,7 +101,7 @@ margin-bottom:2px;
 
 .logo span{
 font-size:12px;
-color:#bbb;
+color:#9ca3af;
 }
 
 /* MENÚ */
@@ -74,43 +111,54 @@ align-items:center;
 }
 
 nav a{
-color:white;
+color:var(--gris-texto);
 text-decoration:none;
 margin-left:20px;
 font-weight:bold;
 font-size:16px;
+position:relative;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+width:0%;
+height:2px;
+background:var(--azul-pastel);
+left:0;
+bottom:-5px;
 transition:0.3s;
 }
 
-nav a:hover{
-color:#00c3ff;
+nav a:hover::after{
+width:100%;
 }
 
 nav .active{
-border-bottom:2px solid #00c3ff;
+color:var(--azul-pastel);
 }
 
 /* CONTENEDOR */
 .container{
 width:420px;
 margin:60px auto;
-background:rgba(255,255,255,0.08);
-backdrop-filter: blur(15px);
+background:rgba(255,255,255,0.06);
+backdrop-filter: blur(18px);
 padding:35px;
-border-radius:25px;
+border-radius:20px;
 text-align:center;
-box-shadow:0 15px 40px rgba(0,0,0,0.6);
+box-shadow:0 15px 40px rgba(0,0,0,0.5);
 }
 
 /* TITULO */
 .titulo{
-color:#00c3ff;
+color:#bfdbfe;
 font-size:26px;
 font-weight:bold;
 }
 
 .sub{
-color:#ddd;
+color:#cbd5f5;
 font-size:14px;
 margin-bottom:20px;
 }
@@ -122,7 +170,7 @@ margin-bottom:15px;
 }
 
 label{
-color:#ddd;
+color:#cbd5f5;
 font-size:14px;
 }
 
@@ -130,9 +178,10 @@ input{
 width:100%;
 padding:12px;
 border-radius:10px;
-border:none;
+border:1px solid rgba(255,255,255,0.1);
 margin-top:5px;
-background:rgba(255,255,255,0.9);
+background:rgba(255,255,255,0.08);
+color:white;
 }
 
 /* BOTON */
@@ -141,16 +190,17 @@ margin-top:15px;
 width:100%;
 padding:12px;
 border:none;
-border-radius:12px;
-background: linear-gradient(45deg,#00c3ff,#0077ff);
-color:white;
+border-radius:10px;
+background: linear-gradient(45deg,var(--azul-pastel),var(--azul-medio));
+color:#0f172a;
 cursor:pointer;
+font-weight:600;
 transition:0.3s;
 }
 
 button:hover{
-transform:scale(1.05);
-box-shadow:0 5px 15px rgba(0,195,255,0.4);
+transform:translateY(-2px);
+box-shadow:0 5px 15px rgba(147,197,253,0.4);
 }
 
 /* MENSAJE */
@@ -162,18 +212,18 @@ font-size:14px;
 /* CREDENCIALES */
 .credenciales{
 margin-top:15px;
-background:rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.05);
 padding:12px;
 border-radius:12px;
 font-size:13px;
-color:#ddd;
+color:#cbd5f5;
 }
 
 /* PANEL */
 .panel{
 display:none;
 margin-top:20px;
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.06);
 backdrop-filter: blur(15px);
 padding:20px;
 border-radius:15px;
@@ -182,7 +232,7 @@ text-align:left;
 
 /* OPCIONES */
 .opcion{
-background:rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.05);
 padding:10px;
 border-radius:10px;
 margin:8px 0;
@@ -191,14 +241,14 @@ transition:0.3s;
 }
 
 .opcion:hover{
-background:rgba(0,195,255,0.2);
+background:rgba(147,197,253,0.15);
 }
 
 /* LOGOUT */
 .logout{
 margin-top:15px;
-background:red;
-color:white;
+background: linear-gradient(45deg,var(--azul-pastel),var(--azul-medio));
+color:#0f172a;
 }
 
 /* MODAL */
@@ -209,22 +259,23 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.7);
+background:rgba(0,0,0,0.8);
 justify-content:center;
 align-items:center;
 }
 
-/* MODAL PRO */
+/* MODAL */
 .modal-content{
-background: rgba(255,255,255,0.1);
-backdrop-filter: blur(18px);
+background: rgba(255,255,255,0.06);
+backdrop-filter: blur(20px);
 padding:30px;
 border-radius:20px;
 text-align:center;
 width:400px;
-color:white;
+color:var(--gris-texto);
 animation:zoom 0.3s ease;
 position:relative;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
 }
 
 /* CERRAR */
@@ -233,6 +284,7 @@ position:absolute;
 right:15px;
 top:10px;
 cursor:pointer;
+color:var(--azul-pastel);
 }
 
 /* STATS */
@@ -244,14 +296,14 @@ margin-top:15px;
 }
 
 .stats-grid div{
-background:rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.05);
 padding:15px;
 border-radius:10px;
 }
 
 .stats-grid h3{
 margin:0;
-color:#00c3ff;
+color:var(--azul-pastel);
 }
 
 /* ANIMACION */
@@ -267,16 +319,13 @@ to{transform:scale(1);opacity:1;}
 
 <header class="navbar">
 <div class="logo">
-
-<!-- IMAGEN UPLA -->
-<img src="upla.png" alt="UPLA" class="logo-img">
+<img src="logo.png" alt="UPLA" class="logo-img">
 
 <div>
 <h2>Base de Datos II</h2>
 <p>Guadalupe Carbajal Emanuel Gaddiel</p>
 <span>Universidad Peruana Los Andes - Huancayo</span>
 </div>
-
 </div>
 
 <nav>
