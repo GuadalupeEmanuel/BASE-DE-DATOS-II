@@ -30,7 +30,7 @@ background-position:center;
 color:var(--gris-texto);
 }
 
-/* NAVBAR (NO MODIFICADO) */
+/* NAVBAR (NO TOCADO) */
 .navbar{
 display:flex;
 justify-content:space-between;
@@ -145,7 +145,14 @@ backdrop-filter: blur(8px);
 }
 
 .card h3{
+margin-bottom:5px;
+font-size:18px;
 color:#e0f2fe;
+}
+
+.card p{
+font-size:13px;
+opacity:0.7;
 }
 
 /* MODAL */
@@ -174,6 +181,15 @@ color:var(--gris-texto);
 position:relative;
 }
 
+.close{
+position:absolute;
+top:15px;
+right:20px;
+font-size:20px;
+cursor:pointer;
+color:var(--azul-pastel);
+}
+
 /* BOTONES */
 .btn-ver{
 background: linear-gradient(45deg, var(--azul-pastel), var(--azul-medio));
@@ -191,6 +207,7 @@ padding:8px 14px;
 border-radius:8px;
 color:white;
 text-decoration:none;
+border:1px solid rgba(255,255,255,0.2);
 }
 
 /* VISOR PDF */
@@ -224,7 +241,12 @@ cursor:pointer;
 
 <header class="navbar">
 <div class="logo">
+<img src="logo.png" alt="UPLA" class="logo-img">
+<div>
 <h2>Base de Datos II</h2>
+<p>Guadalupe Carbajal Emanuel Gaddiel</p>
+<span>UPLA - Huancayo</span>
+</div>
 </div>
 
 <nav>
@@ -236,7 +258,6 @@ cursor:pointer;
 </header>
 
 <section class="semanas-container">
-
 <h1>Actividades por Semanas</h1>
 
 <div class="grid">
@@ -257,11 +278,11 @@ document.write(`
 <!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
+<span class="close" onclick="cerrarModal()">✖</span>
 
 <h2 id="tituloModal"></h2>
 <div id="linksModal"></div>
 
-<!-- VISOR PDF -->
 <div id="visorPDF">
 <button class="cerrar-pdf" onclick="cerrarPDF()">❌ Cerrar</button>
 <iframe id="framePDF"></iframe>
@@ -272,23 +293,31 @@ document.write(`
 
 <script>
 
-/* 🔥 CAMBIO IMPORTANTE */
-const BASE_URL = "https://github.com/GuadalupeEmanuel/BASE-DE-DATOS-II/raw/main/";
+/* 🔥 URL CORREGIDA (SOLUCIÓN FINAL) */
+const BASE_URL = "https://cdn.jsdelivr.net/gh/GuadalupeEmanuel/BASE-DE-DATOS-II@main/";
 
+/* 🔥 ARCHIVOS */
 const semanas = {
 1: [
     {
         nombre:"ARQUITECTURA DE BASE DE DATOS",
-        archivo:"semana%201.pdf"
+        archivo:"semana 1.pdf"
+    }
+],
+14: [
+    {
+        nombre:"Proyecto Final",
+        archivo:"proyecto_final.pdf"
     }
 ]
 };
 
 function abrirModal(semana){
 
-document.getElementById("modal").style.display="flex"
+const modal = document.getElementById("modal")
+modal.style.display = "flex"
 
-let ruta = BASE_URL + "semana" + semana + "/"
+const ruta = BASE_URL + "semana" + semana + "/"
 let contenido=""
 
 if(semanas[semana]){
@@ -298,12 +327,15 @@ semanas[semana].forEach(file=>{
 let url = ruta + file.archivo
 
 contenido+=`
-<div style="margin:10px 0;">
-<b>${file.nombre}</b><br><br>
-
+<div class="modal-item">
+<div style="text-align:left;">
+<p style="margin:0;font-weight:bold;">📄 ${file.nombre}</p>
+<small>${file.archivo}</small>
+</div>
+<div>
 <button class="btn-ver" onclick="verPDF('${url}')">👁 Ver</button>
-
 <a href="${url}" download class="btn-descargar">📥 Descargar</a>
+</div>
 </div>
 `
 
@@ -318,14 +350,11 @@ document.getElementById("linksModal").innerHTML=contenido
 
 }
 
-/* 🔥 VISOR CORREGIDO */
+/* 🔥 VER PDF SIN ERROR */
 function verPDF(url){
-
 let visor = "https://docs.google.com/gview?url=" + url + "&embedded=true";
-
 document.getElementById("visorPDF").style.display="block";
 document.getElementById("framePDF").src = visor;
-
 }
 
 /* CERRAR PDF */
@@ -335,10 +364,16 @@ document.getElementById("framePDF").src=""
 }
 
 /* CERRAR MODAL */
-window.onclick=function(e){
-const modal=document.getElementById("modal")
-if(e.target===modal){
+function cerrarModal(){
+document.getElementById("modal").style.display="none"
+cerrarPDF()
+}
+
+window.onclick = function(e){
+const modal = document.getElementById("modal")
+if(e.target === modal){
 modal.style.display="none"
+cerrarPDF()
 }
 }
 
