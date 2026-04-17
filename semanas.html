@@ -30,7 +30,7 @@ background-position:center;
 color:var(--gris-texto);
 }
 
-/* NAVBAR */
+/* NAVBAR (NO SE TOCA) */
 .navbar{
 display:flex;
 justify-content:space-between;
@@ -38,25 +38,6 @@ align-items:center;
 padding:25px 70px;
 background: rgba(255, 255, 255, 0.08);
 backdrop-filter: blur(12px);
-position:relative;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo-img{
-width:50px;
-height:50px;
-}
-
-nav a{
-color:var(--gris-texto);
-text-decoration:none;
-margin-left:30px;
-font-weight:600;
 }
 
 /* CONTENEDOR */
@@ -69,6 +50,7 @@ padding:25px;
 border-radius:18px;
 }
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
@@ -82,10 +64,22 @@ border-radius:12px;
 padding:18px;
 text-align:center;
 cursor:pointer;
+transition:0.3s;
 }
 
 .card:hover{
 transform:scale(1.05);
+}
+
+/* UNIDADES */
+.unidad{
+margin-top:30px;
+padding:12px;
+text-align:center;
+background: rgba(147,197,253,0.1);
+border:1px solid rgba(147,197,253,0.3);
+border-radius:10px;
+font-weight:bold;
 }
 
 /* MODAL */
@@ -106,7 +100,6 @@ background: rgba(255,255,255,0.06);
 padding:40px;
 width:60%;
 border-radius:20px;
-position:relative;
 }
 
 .close{
@@ -116,23 +109,13 @@ right:20px;
 cursor:pointer;
 }
 
-/* BOTONES */
+/* BOTÓN VER */
 .btn-ver{
 background:#60a5fa;
 padding:8px 14px;
 border-radius:8px;
 color:black;
 text-decoration:none;
-margin-right:8px;
-}
-
-.btn-descargar{
-background:#0f172a;
-padding:8px 14px;
-border-radius:8px;
-color:white;
-border:1px solid white;
-cursor:pointer;
 }
 
 /* ITEMS */
@@ -151,12 +134,8 @@ justify-content:space-between;
 <body>
 
 <header class="navbar">
-<div class="logo">
-<img src="logo.png">
 <div>
 <h2>Base de Datos II</h2>
-<p>Guadalupe Carbajal Emanuel Gaddiel</p>
-</div>
 </div>
 
 <nav>
@@ -166,20 +145,9 @@ justify-content:space-between;
 </header>
 
 <section class="semanas-container">
-<h1>Actividades por Semanas</h1>
+<h1 style="text-align:center;">Actividades por Semanas</h1>
 
-<div class="grid">
-<script>
-for(let i=1;i<=16;i++){
-document.write(`
-<div class="card" onclick="abrirModal(${i})">
-<h3>Semana ${i}</h3>
-<p>Ver archivos</p>
-</div>
-`)
-}
-</script>
-</div>
+<div id="contenido"></div>
 
 </section>
 
@@ -207,18 +175,35 @@ const semanas = {
 ]
 };
 
-/* 🔥 DESCARGA REAL */
-function descargarArchivo(url, nombre){
-fetch(url)
-.then(res => res.blob())
-.then(blob => {
-const link = document.createElement("a")
-link.href = URL.createObjectURL(blob)
-link.download = nombre
-link.click()
-})
-.catch(()=> alert("Error al descargar"))
+/* CREAR UNIDADES */
+const contenedor = document.getElementById("contenido")
+
+const unidades = [
+{nombre:"Unidad 1", inicio:1, fin:4},
+{nombre:"Unidad 2", inicio:5, fin:8},
+{nombre:"Unidad 3", inicio:9, fin:12},
+{nombre:"Unidad 4", inicio:13, fin:16}
+]
+
+unidades.forEach(u => {
+
+let html = `<div class="unidad">📘 ${u.nombre}</div>`
+html += `<div class="grid">`
+
+for(let i=u.inicio;i<=u.fin;i++){
+html += `
+<div class="card" onclick="abrirModal(${i})">
+<h3>Semana ${i}</h3>
+<p>Ver archivos</p>
+</div>
+`
 }
+
+html += `</div>`
+
+contenedor.innerHTML += html
+
+})
 
 /* MODAL */
 function abrirModal(semana){
@@ -240,9 +225,6 @@ contenido+=`
 </div>
 <div>
 <a href="${url}" target="_blank" class="btn-ver">Ver</a>
-<button onclick="descargarArchivo('${url}','${file.nombre}.pdf')" class="btn-descargar">
-Descargar
-</button>
 </div>
 </div>
 `
