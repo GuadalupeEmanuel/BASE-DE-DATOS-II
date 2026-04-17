@@ -6,6 +6,15 @@
 
 <style>
 
+/* VARIABLES */
+:root{
+--azul-pastel:#93c5fd;
+--azul-medio:#60a5fa;
+--fondo-oscuro:#0f172a;
+--gris-texto:#d1d5db;
+}
+
+/* RESET */
 *{
 margin:0;
 padding:0;
@@ -14,11 +23,11 @@ box-sizing:border-box;
 
 body{
 font-family:'Segoe UI',sans-serif;
-background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+background: linear-gradient(rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.85)),
             url("inge.jpg");
 background-size:cover;
 background-position:center;
-color:white;
+color:var(--gris-texto);
 }
 
 /* NAVBAR */
@@ -27,12 +36,32 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:25px 70px;
-background: rgba(255, 255, 255, 0.05);
+background: rgba(255, 255, 255, 0.08);
 backdrop-filter: blur(12px);
-border-bottom: 1px solid rgba(255,255,255,0.1);
+position:relative;
 }
 
-/* LOGO CON IMAGEN */
+.navbar::after{
+content:"";
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:2px;
+background: linear-gradient(90deg, transparent, var(--azul-pastel), transparent);
+background-size:200%;
+box-shadow:
+0 0 8px var(--azul-pastel),
+0 0 15px rgba(147,197,253,0.6);
+animation: neonLine 3s linear infinite;
+}
+
+@keyframes neonLine{
+0%{ background-position:-200% 0; }
+100%{ background-position:200% 0; }
+}
+
+/* LOGO */
 .logo{
 display:flex;
 align-items:center;
@@ -45,12 +74,17 @@ height:50px;
 object-fit:contain;
 }
 
-.logo h2{ font-size:26px; }
-.logo p{ font-size:16px; opacity:0.8; }
-.logo span{ font-size:13px; color:#bbb; }
+.logo h2{ 
+font-size:26px; 
+color:var(--azul-pastel);
+}
 
+.logo p{ font-size:16px; opacity:0.8; }
+.logo span{ font-size:13px; color:#9ca3af; }
+
+/* MENÚ */
 nav a{
-color:white;
+color:var(--gris-texto);
 text-decoration:none;
 margin-left:30px;
 font-weight:600;
@@ -63,44 +97,123 @@ content:"";
 position:absolute;
 width:0%;
 height:2px;
-background:#00d4ff;
+background:var(--azul-pastel);
 left:0;
 bottom:-5px;
 transition:0.3s;
 }
 
 nav a:hover::after{ width:100%; }
-nav .active{ color:#00d4ff; }
+nav .active{ color:var(--azul-pastel); }
 
 /* CONTENEDOR */
 .semanas-container{
-width:85%;
-margin:40px auto;
-background: rgba(255,255,255,0.08);
+width:90%;
+max-width:1200px;
+margin:30px auto;
+background: rgba(255,255,255,0.05);
 backdrop-filter: blur(15px);
-padding:30px;
-border-radius:25px;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.semanas-container h1{
+text-align:center;
+margin-bottom:15px;
+color:#bfdbfe;
 }
 
 /* GRID */
 .grid{
 display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:25px;
+grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+gap:20px;
+margin-top:20px;
 }
 
-/* TARJETAS */
+/* 🔥 TARJETAS CON NEÓN */
 .card{
-background: rgba(255,255,255,0.1);
-border-radius:18px;
-padding:20px;
+background: rgba(255,255,255,0.05);
+border-radius:12px;
+padding:18px;
 text-align:center;
 cursor:pointer;
-transition:0.3s;
+transition: all 0.3s ease;
+border:1px solid rgba(147,197,253,0.15);
+backdrop-filter: blur(8px);
+position:relative;
+overflow:hidden;
+}
+
+.card h3{
+margin-bottom:5px;
+font-size:18px;
+color:#e0f2fe;
+}
+
+.card p{
+font-size:13px;
+opacity:0.7;
+}
+
+/* EFECTO LUZ */
+.card::before{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background: linear-gradient(120deg, transparent, rgba(147,197,253,0.4), transparent);
+transform: rotate(25deg);
+opacity:0;
+transition:0.5s;
+}
+
+.card:hover::before{
+opacity:1;
+animation: neonMove 2s linear infinite;
 }
 
 .card:hover{
-transform:scale(1.05);
+transform: translateY(-5px) scale(1.02);
+box-shadow:
+0 0 10px rgba(147,197,253,0.3),
+0 0 20px rgba(147,197,253,0.25),
+0 0 35px rgba(147,197,253,0.2);
+border:1px solid rgba(147,197,253,0.5);
+}
+
+@keyframes neonMove{
+0%{ transform: translateX(-100%) rotate(25deg); }
+100%{ transform: translateX(100%) rotate(25deg); }
+}
+
+/* 🔥 UNIDADES LARGAS CENTRADAS */
+.unidad-titulo{
+grid-column: span 4;
+margin-top:30px;
+margin-bottom:15px;
+padding:14px;
+background: linear-gradient(90deg, rgba(147,197,253,0.15), rgba(147,197,253,0.05));
+border:1px solid rgba(147,197,253,0.3);
+border-radius:10px;
+font-size:22px;
+font-weight:700;
+color:#e0f2fe;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+text-align:center;
+letter-spacing:1px;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.unidad-titulo::before{
+content:"📘";
+font-size:20px;
 }
 
 /* MODAL */
@@ -111,49 +224,67 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.7);
+background:rgba(0,0,0,0.8);
 justify-content:center;
 align-items:center;
 z-index:9999;
 }
 
 .modal-content{
-background: rgba(255,255,255,0.1);
-backdrop-filter: blur(18px);
+background: rgba(255,255,255,0.06);
+backdrop-filter: blur(20px);
 padding:40px;
 width:60%;
 max-width:700px;
-border-radius:25px;
+border-radius:20px;
 text-align:center;
-color:white;
+color:var(--gris-texto);
 position:relative;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
 }
 
-/* CERRAR */
 .close{
 position:absolute;
 top:15px;
 right:20px;
 font-size:20px;
 cursor:pointer;
+color:var(--azul-pastel);
 }
 
 /* BOTONES */
 .btn-ver{
-background:#00c3ff;
-padding:8px 12px;
+background: linear-gradient(45deg, var(--azul-pastel), var(--azul-medio));
+padding:8px 14px;
 border-radius:8px;
-color:white;
+color:#0f172a;
 text-decoration:none;
 margin-right:8px;
+font-weight:600;
 }
 
 .btn-descargar{
-background:#22c55e;
-padding:8px 12px;
+background: rgba(255,255,255,0.1);
+padding:8px 14px;
 border-radius:8px;
 color:white;
 text-decoration:none;
+border:1px solid rgba(255,255,255,0.2);
+}
+
+/* ITEMS MODAL */
+.modal-item{
+margin:15px 0;
+padding:15px;
+background:rgba(255,255,255,0.05);
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.modal-item small{
+color:#9ca3af;
 }
 
 </style>
@@ -163,32 +294,26 @@ text-decoration:none;
 
 <header class="navbar">
 <div class="logo">
-
-<!-- IMAGEN UPLA -->
-<img src="upla.png" alt="UPLA" class="logo-img">
-
+<img src="logo.png" alt="UPLA" class="logo-img">
 <div>
 <h2>Base de Datos II</h2>
 <p>Guadalupe Carbajal Emanuel Gaddiel</p>
 <span>UPLA - Huancayo</span>
 </div>
-
 </div>
 
 <nav>
 <a href="index.html">🏠 Inicio</a>
-<a href="#" class="active">📅 Semanas</a>
+<a href="#" class="active">📅 Unidades</a>
 <a href="contacto.html">✉️ Contacto</a>
 <a href="login.html">🔒 Login</a>
 </nav>
 </header>
 
 <section class="semanas-container">
-
-<h1 style="text-align:center;">Actividades por Semanas</h1>
+<h1>Actividades por Semanas</h1>
 
 <div class="grid">
-
 <script>
 for(let i=1;i<=16;i++){
 document.write(`
@@ -199,7 +324,6 @@ document.write(`
 `)
 }
 </script>
-
 </div>
 
 </section>
@@ -207,12 +331,9 @@ document.write(`
 <!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
-
 <span class="close" onclick="cerrarModal()">✖</span>
-
 <h2 id="tituloModal"></h2>
 <div id="linksModal"></div>
-
 </div>
 </div>
 
@@ -220,7 +341,6 @@ document.write(`
 
 const BASE_URL = "https://raw.githubusercontent.com/GuadalupeEmanuel/BASE-DE-DATOS-II/main/";
 
-/* ARCHIVOS */
 const semanas = {
 1: [
     {nombre:"Informe PDF", archivo:"doc1.pdf"},
@@ -232,7 +352,6 @@ const semanas = {
 };
 
 function abrirModal(semana){
-
 const modal = document.getElementById("modal")
 modal.style.display = "flex"
 
@@ -240,44 +359,28 @@ const ruta = BASE_URL + "semana" + semana + "/"
 let contenido=""
 
 if(semanas[semana]){
-
 semanas[semana].forEach(file=>{
-
 let url = ruta + file.archivo
 
 contenido+=`
-<div style="
-margin:15px 0;
-padding:15px;
-background:rgba(255,255,255,0.08);
-border-radius:12px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-">
-
+<div class="modal-item">
 <div style="text-align:left;">
 <p style="margin:0;font-weight:bold;">📄 ${file.nombre}</p>
-<small style="color:#ccc;">${file.archivo}</small>
+<small>${file.archivo}</small>
 </div>
-
 <div>
 <a href="${url}" target="_blank" class="btn-ver">👁 Ver</a>
 <a href="${url}" download class="btn-descargar">📥 Descargar</a>
 </div>
-
 </div>
 `
-
 })
-
 }else{
 contenido="<p>No hay archivos en esta semana</p>"
 }
 
 document.getElementById("tituloModal").innerHTML="📅 Semana "+semana
 document.getElementById("linksModal").innerHTML=contenido
-
 }
 
 function cerrarModal(){
@@ -290,6 +393,40 @@ if(e.target === modal){
 modal.style.display="none"
 }
 }
+
+/* ORGANIZAR EN UNIDADES */
+window.addEventListener("load", ()=>{
+
+const grid = document.querySelector(".grid")
+const cards = document.querySelectorAll(".card")
+
+const unidades = [
+{nombre:"Unidad 1", rango:[1,4]},
+{nombre:"Unidad 2", rango:[5,8]},
+{nombre:"Unidad 3", rango:[9,12]},
+{nombre:"Unidad 4", rango:[13,16]}
+]
+
+let nuevoContenido = ""
+
+unidades.forEach(u => {
+
+nuevoContenido += `<div class="unidad-titulo">${u.nombre}</div>`
+
+cards.forEach((card,index)=>{
+let semana = index + 1
+
+if(semana >= u.rango[0] && semana <= u.rango[1]){
+nuevoContenido += card.outerHTML
+}
+
+})
+
+})
+
+grid.innerHTML = nuevoContenido
+
+})
 
 </script>
 
