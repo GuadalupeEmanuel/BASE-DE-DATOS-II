@@ -38,130 +38,27 @@ align-items:center;
 padding:25px 70px;
 background: rgba(255, 255, 255, 0.08);
 backdrop-filter: blur(12px);
-position:relative;
 }
 
-.navbar::after{
-content:"";
-position:absolute;
-bottom:0;
-left:0;
-width:100%;
-height:2px;
-background: linear-gradient(90deg, transparent, var(--azul-pastel), transparent);
-background-size:200%;
-box-shadow:
-0 0 8px var(--azul-pastel),
-0 0 15px rgba(147,197,253,0.6);
-animation: neonLine 3s linear infinite;
-}
-
-@keyframes neonLine{
-0%{ background-position:-200% 0; }
-100%{ background-position:200% 0; }
-}
-
-/* LOGO */
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo-img{
-width:50px;
-height:50px;
-object-fit:contain;
-}
-
-.logo h2{ 
-font-size:26px; 
-color:var(--azul-pastel);
-}
-
-.logo p{ font-size:16px; opacity:0.8; }
-.logo span{ font-size:13px; color:#9ca3af; }
-
-/* MENÚ */
-nav a{
-color:var(--gris-texto);
-text-decoration:none;
-margin-left:30px;
-font-weight:600;
-font-size:18px;
-position:relative;
-}
-
-nav a::after{
-content:"";
-position:absolute;
-width:0%;
-height:2px;
-background:var(--azul-pastel);
-left:0;
-bottom:-5px;
-transition:0.3s;
-}
-
-nav a:hover::after{ width:100%; }
-nav .active{ color:var(--azul-pastel); }
-
-/* CONTENEDOR */
-.semanas-container{
-width:90%;
-max-width:1200px;
-margin:30px auto;
-background: rgba(255,255,255,0.05);
-backdrop-filter: blur(15px);
-padding:25px;
-border-radius:18px;
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-
-.semanas-container h1{
-text-align:center;
-margin-bottom:15px;
-color:#bfdbfe;
-}
+.logo h2{ color:var(--azul-pastel); }
 
 /* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
 gap:20px;
-margin-top:20px;
+margin:30px;
 }
 
-/* TARJETAS */
 .card{
 background: rgba(255,255,255,0.05);
+padding:20px;
 border-radius:12px;
-padding:18px;
 text-align:center;
 cursor:pointer;
-transition: all 0.3s ease;
-border:1px solid rgba(147,197,253,0.15);
-backdrop-filter: blur(8px);
-position:relative;
-overflow:hidden;
 }
 
-.card h3{
-margin-bottom:5px;
-font-size:18px;
-color:#e0f2fe;
-}
-
-.card p{
-font-size:13px;
-opacity:0.7;
-}
-
-.card:hover{
-transform: translateY(-5px) scale(1.02);
-}
-
-/* MODAL */
+/* MODAL LISTA */
 .modal{
 display:none;
 position:fixed;
@@ -177,58 +74,67 @@ z-index:9999;
 
 .modal-content{
 background: rgba(255,255,255,0.06);
-backdrop-filter: blur(20px);
-padding:40px;
+padding:30px;
 width:60%;
-max-width:700px;
 border-radius:20px;
-text-align:center;
-color:var(--gris-texto);
-position:relative;
 }
 
 .close{
 position:absolute;
-top:15px;
+top:10px;
 right:20px;
-font-size:20px;
 cursor:pointer;
-color:var(--azul-pastel);
 }
 
-/* BOTONES */
+/* VISOR PDF */
+.viewer{
+display:none;
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:80%;
+background:#000;
+z-index:99999;
+}
+
+.viewer iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+.viewer .cerrar{
+position:absolute;
+top:10px;
+right:20px;
+color:white;
+font-size:20px;
+cursor:pointer;
+background:red;
+padding:5px 10px;
+border-radius:5px;
+}
+
+.modal-item{
+margin:10px 0;
+display:flex;
+justify-content:space-between;
+}
+
 .btn-ver{
-background: linear-gradient(45deg, var(--azul-pastel), var(--azul-medio));
-padding:8px 14px;
-border-radius:8px;
-color:#0f172a;
-text-decoration:none;
-margin-right:8px;
-font-weight:600;
+background:#60a5fa;
+padding:6px 10px;
+border-radius:5px;
+cursor:pointer;
 }
 
 .btn-descargar{
-background: rgba(255,255,255,0.1);
-padding:8px 14px;
-border-radius:8px;
+background:#22c55e;
+padding:6px 10px;
+border-radius:5px;
 color:white;
 text-decoration:none;
-border:1px solid rgba(255,255,255,0.2);
-}
-
-/* ITEMS MODAL */
-.modal-item{
-margin:15px 0;
-padding:15px;
-background:rgba(255,255,255,0.05);
-border-radius:12px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.modal-item small{
-color:#9ca3af;
 }
 
 </style>
@@ -237,25 +143,8 @@ color:#9ca3af;
 <body>
 
 <header class="navbar">
-<div class="logo">
-<img src="logo.png" alt="UPLA" class="logo-img">
-<div>
 <h2>Base de Datos II</h2>
-<p>Guadalupe Carbajal Emanuel Gaddiel</p>
-<span>UPLA - Huancayo</span>
-</div>
-</div>
-
-<nav>
-<a href="index.html">🏠 Inicio</a>
-<a href="#" class="active">📅 Semanas</a>
-<a href="contacto.html">✉️ Contacto</a>
-<a href="login.html">🔒 Login</a>
-</nav>
 </header>
-
-<section class="semanas-container">
-<h1>Actividades por Semanas</h1>
 
 <div class="grid">
 <script>
@@ -270,8 +159,6 @@ document.write(`
 </script>
 </div>
 
-</section>
-
 <!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
@@ -281,52 +168,47 @@ document.write(`
 </div>
 </div>
 
+<!-- VISOR PDF -->
+<div id="viewer" class="viewer">
+<span class="cerrar" onclick="cerrarViewer()">✖ Cerrar</span>
+<iframe id="pdfFrame"></iframe>
+</div>
+
 <script>
 
 const BASE_URL = "https://raw.githubusercontent.com/GuadalupeEmanuel/BASE-DE-DATOS-II/main/";
 
 const semanas = {
 1: [
-    {nombre:"Informe PDF", archivo:"doc1.pdf"},
-    {nombre:"Trabajo Word", archivo:"doc2.docx"}
-],
-14: [
-    {nombre:"Proyecto Final", archivo:"proyecto_final.pdf"}
+{nombre:"ARQUITECTURA DE BASE DE DATOS", archivo:"semana%201.pdf"}
 ]
 };
 
 function abrirModal(semana){
-const modal = document.getElementById("modal")
-modal.style.display = "flex"
+document.getElementById("modal").style.display="flex"
 
 const ruta = BASE_URL + "semana" + semana + "/"
 let contenido=""
 
 if(semanas[semana]){
 semanas[semana].forEach(file=>{
-
-let urlVer = "https://github.com/GuadalupeEmanuel/BASE-DE-DATOS-II/blob/main/semana" + semana + "/" + file.archivo + "?raw=true"
-
-let urlDescarga = ruta + file.archivo
+let url = ruta + file.archivo
 
 contenido+=`
 <div class="modal-item">
-<div style="text-align:left;">
-<p style="margin:0;font-weight:bold;">📄 ${file.nombre}</p>
-<small>${file.archivo}</small>
-</div>
+<span>📄 ${file.nombre}</span>
 <div>
-<a href="${urlVer}" target="_blank" class="btn-ver">👁 Ver</a>
-<a href="${urlDescarga}" download class="btn-descargar">📥 Descargar</a>
+<button class="btn-ver" onclick="verPDF('${url}')">👁 Ver</button>
+<a href="${url}" download class="btn-descargar">📥 Descargar</a>
 </div>
 </div>
 `
 })
 }else{
-contenido="<p>No hay archivos en esta semana</p>"
+contenido="<p>No hay archivos</p>"
 }
 
-document.getElementById("tituloModal").innerHTML="📅 Semana "+semana
+document.getElementById("tituloModal").innerHTML="Semana "+semana
 document.getElementById("linksModal").innerHTML=contenido
 }
 
@@ -334,48 +216,22 @@ function cerrarModal(){
 document.getElementById("modal").style.display="none"
 }
 
-window.onclick = function(e){
-const modal = document.getElementById("modal")
-if(e.target === modal){
-modal.style.display="none"
-}
-}
-
-/* ORGANIZAR EN UNIDADES */
-window.addEventListener("load", ()=>{
-
-const grid = document.querySelector(".grid")
-const cards = document.querySelectorAll(".card")
-
-const unidades = [
-{nombre:"Unidad 1", rango:[1,4]},
-{nombre:"Unidad 2", rango:[5,8]},
-{nombre:"Unidad 3", rango:[9,12]},
-{nombre:"Unidad 4", rango:[13,16]}
-]
-
-let nuevoContenido = ""
-
-unidades.forEach(u => {
-
-nuevoContenido += `<div class="unidad-titulo">${u.nombre}</div>`
-
-cards.forEach((card,index)=>{
-let semana = index + 1
-
-if(semana >= u.rango[0] && semana <= u.rango[1]){
-nuevoContenido += card.outerHTML
+/* 👁 VER PDF */
+function verPDF(url){
+document.getElementById("viewer").style.display="block"
+document.getElementById("pdfFrame").src=url
 }
 
-})
-
-})
-
-grid.innerHTML = nuevoContenido
-
-})
+/* ❌ CERRAR VISOR */
+function cerrarViewer(){
+document.getElementById("viewer").style.display="none"
+document.getElementById("pdfFrame").src=""
+}
 
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
