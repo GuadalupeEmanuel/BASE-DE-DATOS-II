@@ -30,7 +30,7 @@ background-position:center;
 color:var(--gris-texto);
 }
 
-/* NAVBAR (NO TOCADO) */
+/* NAVBAR (NO MODIFICADO) */
 .navbar{
 display:flex;
 justify-content:space-between;
@@ -74,6 +74,38 @@ height:50px;
 object-fit:contain;
 }
 
+.logo h2{ 
+font-size:26px; 
+color:var(--azul-pastel);
+}
+
+.logo p{ font-size:16px; opacity:0.8; }
+.logo span{ font-size:13px; color:#9ca3af; }
+
+/* MENÚ */
+nav a{
+color:var(--gris-texto);
+text-decoration:none;
+margin-left:30px;
+font-weight:600;
+font-size:18px;
+position:relative;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+width:0%;
+height:2px;
+background:var(--azul-pastel);
+left:0;
+bottom:-5px;
+transition:0.3s;
+}
+
+nav a:hover::after{ width:100%; }
+nav .active{ color:var(--azul-pastel); }
+
 /* CONTENEDOR */
 .semanas-container{
 width:90%;
@@ -83,6 +115,13 @@ background: rgba(255,255,255,0.05);
 backdrop-filter: blur(15px);
 padding:25px;
 border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.semanas-container h1{
+text-align:center;
+margin-bottom:15px;
+color:#bfdbfe;
 }
 
 /* GRID */
@@ -90,15 +129,23 @@ border-radius:18px;
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
 gap:20px;
+margin-top:20px;
 }
 
-/* CARDS */
+/* TARJETAS */
 .card{
 background: rgba(255,255,255,0.05);
 border-radius:12px;
 padding:18px;
 text-align:center;
 cursor:pointer;
+transition: all 0.3s ease;
+border:1px solid rgba(147,197,253,0.15);
+backdrop-filter: blur(8px);
+}
+
+.card h3{
+color:#e0f2fe;
 }
 
 /* MODAL */
@@ -117,26 +164,32 @@ z-index:9999;
 
 .modal-content{
 background: rgba(255,255,255,0.06);
+backdrop-filter: blur(20px);
 padding:40px;
 width:60%;
+max-width:700px;
 border-radius:20px;
+text-align:center;
+color:var(--gris-texto);
+position:relative;
 }
 
 /* BOTONES */
 .btn-ver{
-background:#60a5fa;
+background: linear-gradient(45deg, var(--azul-pastel), var(--azul-medio));
 padding:8px 14px;
 border-radius:8px;
-color:#000;
+color:#0f172a;
 text-decoration:none;
 margin-right:8px;
 cursor:pointer;
 }
 
 .btn-descargar{
-background:#ccc;
+background: rgba(255,255,255,0.1);
 padding:8px 14px;
 border-radius:8px;
+color:white;
 text-decoration:none;
 }
 
@@ -219,7 +272,8 @@ document.write(`
 
 <script>
 
-const BASE_URL = "https://raw.githubusercontent.com/GuadalupeEmanuel/BASE-DE-DATOS-II/main/";
+/* 🔥 CAMBIO IMPORTANTE */
+const BASE_URL = "https://github.com/GuadalupeEmanuel/BASE-DE-DATOS-II/raw/main/";
 
 const semanas = {
 1: [
@@ -256,18 +310,22 @@ contenido+=`
 })
 
 }else{
-contenido="<p>No hay archivos</p>"
+contenido="<p>No hay archivos en esta semana</p>"
 }
 
-document.getElementById("tituloModal").innerHTML="Semana "+semana
+document.getElementById("tituloModal").innerHTML="📅 Semana "+semana
 document.getElementById("linksModal").innerHTML=contenido
 
 }
 
-/* VER PDF */
+/* 🔥 VISOR CORREGIDO */
 function verPDF(url){
-document.getElementById("visorPDF").style.display="block"
-document.getElementById("framePDF").src=url
+
+let visor = "https://docs.google.com/gview?url=" + url + "&embedded=true";
+
+document.getElementById("visorPDF").style.display="block";
+document.getElementById("framePDF").src = visor;
+
 }
 
 /* CERRAR PDF */
