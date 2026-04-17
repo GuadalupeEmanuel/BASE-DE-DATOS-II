@@ -7,13 +7,12 @@
 body {
     font-family: 'Segoe UI', sans-serif;
 
-    /* Fondo elegante */
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
+    background: linear-gradient(rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.85)),
                 url("inge.jpg");
     background-size: cover;
     background-position: center;
     height: 100vh;
-    color: white;
+    color: #e5e7eb;
 }
 
 /* NAVBAR */
@@ -23,13 +22,46 @@ body {
     align-items: center;
     padding: 20px 60px;
 
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+
+    /* quitamos línea normal */
+    border-bottom: none;
+
+    position: relative;
+}
+
+/* LÍNEA NEÓN */
+.navbar::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+
+    background: linear-gradient(90deg, transparent, #93c5fd, transparent);
+    background-size: 200%;
+
+    box-shadow: 
+        0 0 8px #93c5fd,
+        0 0 15px rgba(147,197,253,0.6);
+
+    animation: neonLine 3s linear infinite;
+}
+
+@keyframes neonLine {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 .logo h2 {
     font-size: 22px;
+    color: #93c5fd;
 }
 
 .logo p {
@@ -39,12 +71,12 @@ body {
 
 .logo span {
     font-size: 12px;
-    color: #bbb;
+    color: #9ca3af;
 }
 
 /* MENÚ */
 nav a {
-    color: white;
+    color: #d1d5db;
     text-decoration: none;
     margin-left: 25px;
     font-weight: 500;
@@ -57,7 +89,7 @@ nav a::after {
     position: absolute;
     width: 0%;
     height: 2px;
-    background: #00d4ff;
+    background: #93c5fd;
     left: 0;
     bottom: -5px;
     transition: 0.3s;
@@ -68,7 +100,7 @@ nav a:hover::after {
 }
 
 nav .active {
-    color: #00d4ff;
+    color: #93c5fd;
 }
 
 /* CONTENEDOR */
@@ -79,22 +111,22 @@ nav .active {
     height: 85vh;
 }
 
-/* TARJETA MÁS PEQUEÑA */
+/* TARJETA */
 .card {
     display: flex;
     align-items: center;
     gap: 30px;
 
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(18px);
-    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border-radius: 18px;
 
     padding: 35px;
     width: 70%;
     max-width: 900px;
 
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
 
     animation: fadeIn 1s ease;
 }
@@ -103,13 +135,13 @@ nav .active {
 .text h1 {
     font-size: 32px;
     margin-bottom: 20px;
-    color: #00d4ff;
+    color: #bfdbfe;
 }
 
 .text p {
     margin-bottom: 15px;
     line-height: 1.6;
-    color: #ddd;
+    color: #cbd5f5;
 }
 
 /* BOTONES */
@@ -122,27 +154,26 @@ nav .active {
     padding: 12px 18px;
 
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
 
-    background: linear-gradient(45deg, #00d4ff, #0077ff);
-    color: white;
+    background: linear-gradient(45deg, #93c5fd, #60a5fa);
+    color: #0f172a;
 
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .buttons button:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 5px 15px rgba(0,212,255,0.4);
+    transform: translateY(-2px);
 }
 
 /* IMAGEN */
 .image img {
     width: 220px;
-    border-radius: 20px;
+    border-radius: 15px;
 
-    border: 3px solid rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.15);
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
@@ -150,13 +181,14 @@ nav .active {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(25px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
+
 .logo {
     display: flex;
     align-items: center;
