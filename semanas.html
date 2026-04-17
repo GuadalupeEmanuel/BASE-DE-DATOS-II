@@ -238,7 +238,7 @@ color:#9ca3af;
 
 <header class="navbar">
 <div class="logo">
-<img src="logo.png" class="logo-img">
+<img src="logo.png" alt="UPLA" class="logo-img">
 <div>
 <h2>Base de Datos II</h2>
 <p>Guadalupe Carbajal Emanuel Gaddiel</p>
@@ -248,7 +248,7 @@ color:#9ca3af;
 
 <nav>
 <a href="index.html">🏠 Inicio</a>
-<a href="#" class="active">📅 Unidades</a>
+<a href="#" class="active">📅 Semanas</a>
 <a href="contacto.html">✉️ Contacto</a>
 <a href="login.html">🔒 Login</a>
 </nav>
@@ -283,29 +283,31 @@ document.write(`
 
 <script>
 
+const BASE_URL = "https://raw.githubusercontent.com/GuadalupeEmanuel/BASE-DE-DATOS-II/main/";
+
 const semanas = {
-    1: [
-        {
-            nombre: "ARQUITECTURA DE BASE DE DATOS",
-            archivo: "semana%201.pdf"
-        }
-    ]
+1: [
+    {nombre:"Informe PDF", archivo:"doc1.pdf"},
+    {nombre:"Trabajo Word", archivo:"doc2.docx"}
+],
+14: [
+    {nombre:"Proyecto Final", archivo:"proyecto_final.pdf"}
+]
 };
 
 function abrirModal(semana){
-
 const modal = document.getElementById("modal")
 modal.style.display = "flex"
 
+const ruta = BASE_URL + "semana" + semana + "/"
 let contenido=""
 
 if(semanas[semana]){
-
 semanas[semana].forEach(file=>{
 
-let urlVer = "https://github.com/GuadalupeEmanuel/BASE-DE-DATOS-II/blob/main/semana" + semana + "/" + file.archivo.replace("%20"," ") + "?raw=true"
+let urlVer = "https://github.com/GuadalupeEmanuel/BASE-DE-DATOS-II/blob/main/semana" + semana + "/" + file.archivo + "?raw=true"
 
-let urlDescarga = "https://raw.githubusercontent.com/GuadalupeEmanuel/BASE-DE-DATOS-II/main/semana" + semana + "/" + file.archivo
+let urlDescarga = ruta + file.archivo
 
 contenido+=`
 <div class="modal-item">
@@ -320,7 +322,6 @@ contenido+=`
 </div>
 `
 })
-
 }else{
 contenido="<p>No hay archivos en esta semana</p>"
 }
@@ -339,6 +340,40 @@ if(e.target === modal){
 modal.style.display="none"
 }
 }
+
+/* ORGANIZAR EN UNIDADES */
+window.addEventListener("load", ()=>{
+
+const grid = document.querySelector(".grid")
+const cards = document.querySelectorAll(".card")
+
+const unidades = [
+{nombre:"Unidad 1", rango:[1,4]},
+{nombre:"Unidad 2", rango:[5,8]},
+{nombre:"Unidad 3", rango:[9,12]},
+{nombre:"Unidad 4", rango:[13,16]}
+]
+
+let nuevoContenido = ""
+
+unidades.forEach(u => {
+
+nuevoContenido += `<div class="unidad-titulo">${u.nombre}</div>`
+
+cards.forEach((card,index)=>{
+let semana = index + 1
+
+if(semana >= u.rango[0] && semana <= u.rango[1]){
+nuevoContenido += card.outerHTML
+}
+
+})
+
+})
+
+grid.innerHTML = nuevoContenido
+
+})
 
 </script>
 
