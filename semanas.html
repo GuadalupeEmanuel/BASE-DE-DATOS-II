@@ -199,7 +199,6 @@ justify-content:space-between;
 
 </header>
 
-<!-- CORREGIDO AQUÍ -->
 <section class="semanas-container">
 <h1>Actividades por Semanas</h1>
 <div id="contenido"></div>
@@ -219,120 +218,40 @@ justify-content:space-between;
 /* CDN */
 const BASE_URL = "https://cdn.jsdelivr.net/gh/GuadalupeEmanuel/BASE-DE-DATOS-II@main/";
 
-/* ARCHIVOS (ARREGLADO) */
+/* ARCHIVOS CORREGIDOS */
 const semanas = {
-1: [
-    {
-        nombre: "ARQUITECTURA DE BASE DE DATOS",
-        archivo: "semana1/semana1.pdf"
-    }
-],
-2: [
-    {
-        nombre: "Analisis tecnico",
-        archivo: "semana2/semana2.pdf"
-    }
-]
-3: [
-    {
-        nombre: "Tema semana 3",
-        archivo: "semana3/semana3.pdf"
-    }
-],
-4: [
-    {
-        nombre: "Tema semana 4",
-        archivo: "semana4/semana4.pdf"
-    }
-],
-5: [
-    {
-        nombre: "Tema semana 5",
-        archivo: "semana5/semana5.pdf"
-    }
-],
-6: [
-    {
-        nombre: "Tema semana 6",
-        archivo: "semana6/semana6.pdf"
-    }
-],
-7: [
-    {
-        nombre: "Tema semana 7",
-        archivo: "semana7/semana7.pdf"
-    }
-],
-8: [
-    {
-        nombre: "Tema semana 8",
-        archivo: "semana8/semana8.pdf"
-    }
-],
-9: [
-    {
-        nombre: "Tema semana 9",
-        archivo: "semana9/semana9.pdf"
-    }
-],
-10: [
-    {
-        nombre: "Tema semana 10",
-        archivo: "semana10/semana10.pdf"
-    }
-],
-11: [
-    {
-        nombre: "Tema semana 11",
-        archivo: "semana11/semana11.pdf"
-    }
-],
-12: [
-    {
-        nombre: "Tema semana 12",
-        archivo: "semana12/semana12.pdf"
-    }
-],
-13: [
-    {
-        nombre: "Tema semana 13",
-        archivo: "semana13/semana13.pdf"
-    }
-],
-14: [
-    {
-        nombre: "Tema semana 14",
-        archivo: "semana14/semana14.pdf"
-    }
-],
-15: [
-    {
-        nombre: "Tema semana 15",
-        archivo: "semana15/semana15.pdf"
-    }
-],
-16: [
-    {
-        nombre: "Tema semana 16",
-        archivo: "semana16/semana16.pdf"
-    }
-]
+1: [{ nombre: "ARQUITECTURA DE BASE DE DATOS", archivo: "semana1/semana1.pdf" }],
+2: [{ nombre: "Analisis tecnico", archivo: "semana2/semana2.pdf" }],
+3: [{ nombre: "Tema semana 3", archivo: "semana3/semana3.pdf" }],
+4: [{ nombre: "Tema semana 4", archivo: "semana4/semana4.pdf" }],
+5: [{ nombre: "Tema semana 5", archivo: "semana5/semana5.pdf" }],
+6: [{ nombre: "Tema semana 6", archivo: "semana6/semana6.pdf" }],
+7: [{ nombre: "Tema semana 7", archivo: "semana7/semana7.pdf" }],
+8: [{ nombre: "Tema semana 8", archivo: "semana8/semana8.pdf" }],
+9: [{ nombre: "Tema semana 9", archivo: "semana9/semana9.pdf" }],
+10: [{ nombre: "Tema semana 10", archivo: "semana10/semana10.pdf" }],
+11: [{ nombre: "Tema semana 11", archivo: "semana11/semana11.pdf" }],
+12: [{ nombre: "Tema semana 12", archivo: "semana12/semana12.pdf" }],
+13: [{ nombre: "Tema semana 13", archivo: "semana13/semana13.pdf" }],
+14: [{ nombre: "Tema semana 14", archivo: "semana14/semana14.pdf" }],
+15: [{ nombre: "Tema semana 15", archivo: "semana15/semana15.pdf" }],
+16: [{ nombre: "Tema semana 16", archivo: "semana16/semana16.pdf" }]
 };
 
 /* UNIDADES */
-const contenedor = document.getElementById("contenido")
+const contenedor = document.getElementById("contenido");
 
 const unidades = [
 {nombre:"Unidad 1", inicio:1, fin:4},
 {nombre:"Unidad 2", inicio:5, fin:8},
 {nombre:"Unidad 3", inicio:9, fin:12},
 {nombre:"Unidad 4", inicio:13, fin:16}
-]
+];
 
 unidades.forEach(u => {
 
-let html = `<div class="unidad">📘 ${u.nombre}</div>`
-html += `<div class="grid">`
+let html = `<div class="unidad">📘 ${u.nombre}</div>`;
+html += `<div class="grid">`;
 
 for(let i=u.inicio;i<=u.fin;i++){
 html += `
@@ -340,27 +259,26 @@ html += `
 <h3>Semana ${i}</h3>
 <p>Ver archivos</p>
 </div>
-`
+`;
 }
 
-html += `</div>`
+html += `</div>`;
+contenedor.innerHTML += html;
 
-contenedor.innerHTML += html
-
-})
+});
 
 /* MODAL */
 function abrirModal(semana){
 
-const modal = document.getElementById("modal")
-modal.style.display = "flex"
+const modal = document.getElementById("modal");
+modal.style.display = "flex";
 
-let contenido=""
+let contenido="";
 
 if(semanas[semana]){
 semanas[semana].forEach(file=>{
 
-let url = BASE_URL + file.archivo
+let url = BASE_URL + file.archivo;
 
 contenido+=`
 <div class="modal-item">
@@ -371,24 +289,24 @@ contenido+=`
 <a href="${url}" target="_blank" class="btn-ver">👁 Ver</a>
 </div>
 </div>
-`
-})
+`;
+});
 }else{
-contenido="<p>No hay archivos</p>"
+contenido="<p>No hay archivos</p>";
 }
 
-document.getElementById("tituloModal").innerHTML="📅 Semana "+semana
-document.getElementById("linksModal").innerHTML=contenido
+document.getElementById("tituloModal").innerHTML="📅 Semana "+semana;
+document.getElementById("linksModal").innerHTML=contenido;
 }
 
 function cerrarModal(){
-document.getElementById("modal").style.display="none"
+document.getElementById("modal").style.display="none";
 }
 
 window.onclick=function(e){
-const modal=document.getElementById("modal")
+const modal=document.getElementById("modal");
 if(e.target===modal){
-modal.style.display="none"
+modal.style.display="none";
 }
 }
 
