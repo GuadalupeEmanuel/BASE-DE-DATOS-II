@@ -6,109 +6,156 @@
 
 <style>
 
-/* VARIABLES */
+/* 🎨 PALETA GLOBAL */
 :root{
---azul-pastel:#93c5fd;
---azul-medio:#60a5fa;
---fondo-oscuro:#0f172a;
---gris-texto:#d1d5db;
+--bg-main:#020617;
+--bg-secondary:#0f172a;
+--card-bg:rgba(15,23,42,0.7);
+
+--primary:#38bdf8;
+--secondary:#a855f7;
+
+--text-main:#e2e8f0;
+--text-soft:#cbd5f5;
+--text-muted:#94a3b8;
+
+--border:rgba(56,189,248,0.2);
+--glow:rgba(56,189,248,0.4);
 }
 
 /* RESET */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:'Segoe UI',sans-serif;
-background: linear-gradient(rgba(30, 41, 59, 0.55), rgba(15, 23, 42, 0.65)),
-            url("inge.jpg");
-background-size:cover;
-background-position:center;
-color:var(--gris-texto);
+background: radial-gradient(circle at top, var(--bg-secondary), var(--bg-main));
+color:var(--text-main);
+}
+
+/* 🔥 FONDO MATRIX */
+#matrix{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-10;
 }
 
 /* NAVBAR */
 .navbar{
+position:fixed;
+top:0;
+width:100%;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:25px 70px;
-background: rgba(255, 255, 255, 0.08);
-backdrop-filter: blur(12px);
+padding:18px 60px;
+background:rgba(2,6,23,0.85);
+backdrop-filter:blur(10px);
+border-bottom:1px solid var(--border);
+z-index:1000;
 }
 
 /* LOGO */
 .logo{
 display:flex;
 align-items:center;
-gap:12px;
+gap:15px;
 }
 
-.logo img{
-width:50px;
-height:50px;
+.logo-box{
+background:#fff;
+padding:6px;
+border-radius:10px;
+box-shadow:0 0 15px var(--glow);
 }
 
-.logo h2{
-color:var(--azul-pastel);
+.logo-box img{
+width:45px;
 }
 
-.logo p{
-font-size:14px;
-opacity:0.8;
+.logo-text h2{
+color:var(--primary);
 }
 
-.logo span{
-font-size:12px;
-color:#9ca3af;
+.logo-text p{
+color:var(--text-soft);
+font-size:13px;
+}
+
+.logo-text span{
+color:var(--text-muted);
+font-size:11px;
 }
 
 /* MENU */
 nav a{
-color:var(--gris-texto);
-text-decoration:none;
 margin-left:25px;
-font-weight:600;
+color:var(--text-soft);
+text-decoration:none;
 transition:0.3s;
 }
 
 nav a:hover{
-color:var(--azul-pastel);
+color:var(--primary);
+text-shadow:0 0 8px var(--primary);
 }
 
 nav .active{
-color:var(--azul-pastel);
+color:var(--primary);
 }
 
 /* CONTENEDOR */
 .semanas-container{
 width:90%;
 max-width:1200px;
-margin:40px auto;
-background: rgba(255,255,255,0.05);
+margin:120px auto 40px;
+
+background:var(--card-bg);
 padding:30px;
 border-radius:18px;
-backdrop-filter: blur(10px);
+border:1px solid var(--border);
+backdrop-filter:blur(10px);
+box-shadow:0 0 30px var(--glow);
 }
 
 h1{
 text-align:center;
 margin-bottom:30px;
+color:var(--primary);
 }
 
 /* UNIDADES */
 .unidad{
-margin-top:30px;
-padding:14px;
+margin-top:35px;
+padding:18px;
 text-align:center;
-background: rgba(147,197,253,0.1);
-border:1px solid rgba(147,197,253,0.3);
-border-radius:10px;
+border-radius:12px;
+
+background:rgba(2,6,23,0.7);
+border:1px solid var(--border);
+
+box-shadow:0 0 15px var(--glow);
+transition:0.3s;
+}
+
+.unidad:hover{
+box-shadow:0 0 25px var(--primary);
+}
+
+.unidad-numero{
+font-size:14px;
+color:var(--text-muted);
+margin-bottom:5px;
+letter-spacing:1px;
+}
+
+.unidad-nombre{
+font-size:20px;
 font-weight:bold;
-font-size:18px;
+color:var(--primary);
+text-shadow:0 0 10px var(--primary);
 }
 
 /* GRID */
@@ -121,17 +168,50 @@ margin-top:15px;
 
 /* TARJETAS */
 .card{
-background: rgba(255,255,255,0.05);
+background:rgba(2,6,23,0.85);
 border-radius:12px;
 padding:20px;
 text-align:center;
 cursor:pointer;
+border:1px solid var(--border);
+
+position:relative;
+overflow:hidden;
+
 transition:0.3s;
 }
 
+.card::before{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:-100%;
+background:linear-gradient(120deg, transparent, rgba(56,189,248,0.4), transparent);
+transition:0.5s;
+}
+
+.card:hover::before{
+left:100%;
+}
+
 .card:hover{
-transform:scale(1.07);
-background: rgba(96,165,250,0.2);
+transform:translateY(-6px) scale(1.04);
+box-shadow:
+0 0 10px var(--primary),
+0 0 25px var(--glow);
+border:1px solid var(--primary);
+}
+
+.card h3{
+color:var(--primary);
+margin-bottom:5px;
+}
+
+.card p{
+color:var(--text-muted);
+font-size:13px;
 }
 
 /* MODAL */
@@ -142,29 +222,19 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.8);
+background:rgba(0,0,0,0.85);
 justify-content:center;
 align-items:center;
-animation:fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
 }
 
 .modal-content{
-background: rgba(255,255,255,0.06);
+background:var(--card-bg);
 padding:40px;
 width:60%;
 border-radius:20px;
 position:relative;
-animation:scaleIn 0.3s ease;
-}
-
-@keyframes scaleIn{
-from{transform:scale(0.8);}
-to{transform:scale(1);}
+border:1px solid var(--border);
+box-shadow:0 0 30px var(--glow);
 }
 
 .close{
@@ -172,29 +242,33 @@ position:absolute;
 top:15px;
 right:20px;
 cursor:pointer;
-color:var(--azul-pastel);
+color:var(--primary);
 font-size:20px;
 }
 
-/* BOTON VER */
 .btn-ver{
-background:#60a5fa;
-padding:8px 14px;
-border-radius:8px;
-color:black;
+border:1px solid var(--primary);
+padding:6px 12px;
+border-radius:6px;
+color:var(--primary);
 text-decoration:none;
-font-weight:bold;
+transition:0.3s;
 }
 
-/* ITEM */
+.btn-ver:hover{
+background:var(--primary);
+color:#020617;
+}
+
 .modal-item{
 margin:15px 0;
 padding:15px;
-background:rgba(255,255,255,0.05);
+background:rgba(2,6,23,0.8);
 border-radius:12px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+border:1px solid var(--border);
 }
 
 </style>
@@ -202,15 +276,23 @@ align-items:center;
 
 <body>
 
+<!-- 🔥 CANVAS FONDO -->
+<canvas id="matrix"></canvas>
+
 <header class="navbar">
 
 <div class="logo">
-<img src="logo.png" alt="logo">
-<div>
+
+<div class="logo-box">
+<img src="logo.png">
+</div>
+
+<div class="logo-text">
 <h2>Base de Datos II</h2>
 <p>Guadalupe Carbajal Emanuel Gaddiel</p>
 <span>UPLA - Huancayo</span>
 </div>
+
 </div>
 
 <nav>
@@ -238,51 +320,98 @@ align-items:center;
 
 <script>
 
-/* CDN */
+/* MATRIX */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "01アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+
+for(let i=0;i<columns;i++){
+drops[i]=1;
+}
+
+function draw(){
+ctx.fillStyle = "rgba(2,6,23,0.08)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle = "#38bdf8";
+ctx.font = fontSize + "px monospace";
+
+for(let i=0;i<drops.length;i++){
+const text = letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize > canvas.height && Math.random()>0.975){
+drops[i]=0;
+}
+
+drops[i]++;
+}
+}
+
+setInterval(draw,33);
+
+window.addEventListener("resize",()=>{
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+});
+
+/* TU JS ORIGINAL */
 const BASE_URL = "https://cdn.jsdelivr.net/gh/GuadalupeEmanuel/BASE-DE-DATOS-II@main/";
 
-/* DATOS */
 const semanas = {
-1: [{ nombre: "Arquitectura de Base de Datos", archivo: "semana1/semana11.pdf" }],
-2: [
-{ nombre: "Analisis tecnico", archivo: "semana2/semana2.pdf" },
-{ nombre: "Diagrama", archivo: "semana2/semana22.pdf" },
-{ nombre: "Instalacion de SQL", archivo: "semana2/semana222.pdf" },
-{ nombre: "Diagrama 2", archivo: "semana2/semana2222.pdf" }
+1:[{nombre:"Arquitectura de Base de Datos",archivo:"semana1/semana11.pdf"}],
+2:[
+{nombre:"Análisis Técnico",archivo:"semana2/semana2.pdf"},
+{nombre:"Diagrama",archivo:"semana2/semana22.pdf"},
+{nombre:"Instalación de SQL",archivo:"semana2/semana222.pdf"},
+{nombre:"Diagrama 2",archivo:"semana2/semana2222.pdf"}
 ],
-3: [{ nombre: "Tema semana 3", archivo: "semana3/semana3.pdf" }],
-4: [{ nombre: "Tema semana 4", archivo: "semana4/semana4.pdf" }],
-5: [{ nombre: "Tema semana 5", archivo: "semana5/semana5.pdf" }],
-6: [{ nombre: "Tema semana 6", archivo: "semana6/semana6.pdf" }],
-7: [{ nombre: "Tema semana 7", archivo: "semana7/semana7.pdf" }],
-8: [{ nombre: "Tema semana 8", archivo: "semana8/semana8.pdf" }],
-9: [{ nombre: "Tema semana 9", archivo: "semana9/semana9.pdf" }],
-10: [{ nombre: "Tema semana 10", archivo: "semana10/semana10.pdf" }],
-11: [{ nombre: "Tema semana 11", archivo: "semana11/semana11.pdf" }],
-12: [{ nombre: "Tema semana 12", archivo: "semana12/semana12.pdf" }],
-13: [{ nombre: "Tema semana 13", archivo: "semana13/semana13.pdf" }],
-14: [{ nombre: "Tema semana 14", archivo: "semana14/semana14.pdf" }],
-15: [{ nombre: "Tema semana 15", archivo: "semana15/semana15.pdf" }],
-16: [{ nombre: "Tema semana 16", archivo: "semana16/semana16.pdf" }]
+3:[{nombre:"Modelo de Datos",archivo:"semana3/semana3.pdf"}],
+4:[{nombre:"Modelo Entidad-Relación",archivo:"semana4/semana4.pdf"}],
+5:[{nombre:"Normalización de Datos",archivo:"semana5/semana5.pdf"}],
+6:[{nombre:"Álgebra Relacional",archivo:"semana6/semana6.pdf"}],
+7:[{nombre:"SQL Básico",archivo:"semana7/semana7.pdf"}],
+8:[{nombre:"SQL Avanzado",archivo:"semana8/semana8.pdf"}],
+9:[{nombre:"Procedimientos",archivo:"semana9/semana9.pdf"}],
+10:[{nombre:"Triggers",archivo:"semana10/semana10.pdf"}],
+11:[{nombre:"Funciones",archivo:"semana11/semana11.pdf"}],
+12:[{nombre:"Transacciones",archivo:"semana12/semana12.pdf"}],
+13:[{nombre:"Seguridad",archivo:"semana13/semana13.pdf"}],
+14:[{nombre:"Optimización",archivo:"semana14/semana14.pdf"}],
+15:[{nombre:"Administración BD",archivo:"semana15/semana15.pdf"}],
+16:[{nombre:"Proyecto Final",archivo:"semana16/semana16.pdf"}]
 };
 
-/* UNIDADES */
-const contenedor = document.getElementById("contenido");
+const contenedor=document.getElementById("contenido");
 
-const unidades = [
-{nombre:"Unidad 1", inicio:1, fin:4},
-{nombre:"Unidad 2", inicio:5, fin:8},
-{nombre:"Unidad 3", inicio:9, fin:12},
-{nombre:"Unidad 4", inicio:13, fin:16}
+const unidades=[
+{nombre:"Arquitectura de Base de Datos",inicio:1,fin:4},
+{nombre:"Diseño y Modelado",inicio:5,fin:8},
+{nombre:"Implementación SQL",inicio:9,fin:12},
+{nombre:"Administración y Seguridad",inicio:13,fin:16}
 ];
 
-unidades.forEach(u => {
+unidades.forEach((u,index)=>{
 
-let html = `<div class="unidad">📘 ${u.nombre}</div>`;
-html += `<div class="grid">`;
+let html=`
+<div class="unidad">
+<div class="unidad-numero">📘 Unidad ${index+1}</div>
+<div class="unidad-nombre">${u.nombre}</div>
+</div>
+`;
+
+html+=`<div class="grid">`;
 
 for(let i=u.inicio;i<=u.fin;i++){
-html += `
+html+=`
 <div class="card" onclick="abrirModal(${i})">
 <h3>Semana ${i}</h3>
 <p>Ver archivos</p>
@@ -290,32 +419,25 @@ html += `
 `;
 }
 
-html += `</div>`;
-contenedor.innerHTML += html;
+html+=`</div>`;
+contenedor.innerHTML+=html;
 
 });
 
-/* MODAL */
 function abrirModal(semana){
-
-const modal = document.getElementById("modal");
-modal.style.display = "flex";
+const modal=document.getElementById("modal");
+modal.style.display="flex";
 
 let contenido="";
 
 if(semanas[semana]){
 semanas[semana].forEach(file=>{
-
-let url = BASE_URL + file.archivo;
+let url=BASE_URL+file.archivo;
 
 contenido+=`
 <div class="modal-item">
-<div>
-<p><b>📄 ${file.nombre}</b></p>
-</div>
-<div>
+<div><b>📄 ${file.nombre}</b></div>
 <a href="${url}" target="_blank" class="btn-ver">👁 Ver</a>
-</div>
 </div>
 `;
 });
