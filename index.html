@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Repositorio Académico</title>
 
 <style>
@@ -108,6 +109,10 @@ body::before {
 }
 
 /* MENU */
+nav {
+  display: flex;
+}
+
 nav a {
   margin-left: 25px;
   text-decoration: none;
@@ -260,12 +265,67 @@ nav a:hover {
   100% { width: 30%; }
 }
 
+/* 🔥 RESPONSIVE 🔥 */
+@media (max-width: 768px) {
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  nav {
+    margin-top: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  nav a {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .container {
+    margin-top: 140px;
+    padding: 20px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .text h1 {
+    font-size: 22px;
+  }
+
+  .text p {
+    font-size: 14px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+
+  .side {
+    width: 100%;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- CANVAS MATRIX -->
 <canvas id="matrix"></canvas>
 
 <header class="navbar">
@@ -299,16 +359,10 @@ nav a:hover {
       <p>🔐 Entorno con acceso controlado que garantiza organización segura de contenidos educativos.</p>
       <p>👤 Usuario: <b>Guadalupe Carbajal Emanuel</b></p>
       <p>🧠 Rol: <b>Estudiante del curso Base de Datos II</b></p>
-      <p>📡 Repositorio digital diseñado para almacenar, gestionar y visualizar evidencias académicas como prácticas, proyectos y evaluaciones.</p>
-      <p>📂 Navegación estructurada que permite acceso eficiente a cada módulo del curso.</p>
-      <p>📊 Seguimiento continuo del progreso académico y desarrollo de competencias.</p>
-      <p>🔄 Sincronización constante garantizando disponibilidad de información en tiempo real.</p>
+      <p>📡 Repositorio digital diseñado para almacenar, gestionar y visualizar evidencias académicas.</p>
 
       <div class="terminal">
         > Initializing academic system...<br>
-        > Verifying credentials...<br>
-        > Loading modules...<br>
-        > Connecting database...<br>
         > Access granted ✔<br>
         > System ready █
       </div>
@@ -332,12 +386,6 @@ nav a:hover {
       </div>
 
       <div class="box">
-        📂 Gestión de archivos
-        <div class="bar"><span></span></div>
-        Actualización constante
-      </div>
-
-      <div class="box">
         📊 Progreso académico
         <div class="bar"><span></span></div>
         Evolución continua
@@ -351,17 +399,16 @@ nav a:hover {
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
 
 const letters = "01アカサタナハマヤラワABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const fontSize = 14;
-const columns = canvas.width / fontSize;
-
-const drops = [];
-for (let i = 0; i < columns; i++) {
-  drops[i] = 1;
-}
+let columns = canvas.width / fontSize;
+let drops = Array(Math.floor(columns)).fill(1);
 
 function draw() {
   ctx.fillStyle = "rgba(2,6,23,0.08)";
@@ -385,8 +432,9 @@ function draw() {
 setInterval(draw, 33);
 
 window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  resizeCanvas();
+  columns = canvas.width / fontSize;
+  drops = Array(Math.floor(columns)).fill(1);
 });
 </script>
 
