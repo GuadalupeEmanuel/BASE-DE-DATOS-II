@@ -2,444 +2,537 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Unidades - Base de Datos II</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidades — Base de Datos II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
-
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;}
-
 :root{
---primary:#ff3b3b;
---text:#e5e5e5;
---nav-h:80px;
+  --red:#e24b4a;--red-dark:#a32d2d;
+  --bg:#060608;--surface:rgba(13,13,18,0.82);--surface2:rgba(19,19,26,0.88);
+  --border:rgba(226,75,74,0.25);--border2:rgba(226,75,74,0.12);
+  --text:#e8e8f0;--muted:#9a9ab8;
+  --mono:'Share Tech Mono',monospace;
 }
-
-/* 🌌 FONDO */
 body{
-font-family:'Segoe UI',sans-serif;
-background:
-radial-gradient(circle at 20% 20%, rgba(255,0,0,0.15), transparent 40%),
-radial-gradient(circle at 80% 30%, rgba(255,140,0,0.15), transparent 40%),
-#050505;
-color:var(--text);
-overflow-x:hidden;
-cursor:none;
-animation:pageIn .35s ease;
+  font-family:var(--mono);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
 }
 
-/* 🔥 ENTRADA DE PÁGINA */
-@keyframes pageIn{
-from{
-opacity:0;
-transform:translateY(-10px);
+/* VIDEO FONDO */
+#bg-video{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;z-index:-2;opacity:0.18;pointer-events:none;
 }
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-/* 🔴 CURSOR */
-.cursor-dot{
-width:8px;
-height:8px;
-background:var(--primary);
-border-radius:50%;
-position:fixed;
-transform:translate(-50%,-50%);
-pointer-events:none;
-z-index:9999;
-box-shadow:0 0 10px var(--primary);
+.bg-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,0.06) 0%,rgba(6,6,8,0.9) 65%);
+  z-index:-1;pointer-events:none;
 }
 
-.cursor-outline{
-width:28px;
-height:28px;
-border:2px solid rgba(255,59,59,0.6);
-border-radius:50%;
-position:fixed;
-transform:translate(-50%,-50%);
-pointer-events:none;
-z-index:9998;
-transition:0.08s ease;
+/* SCANLINES */
+body::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+  pointer-events:none;z-index:0;
+}
+/* REEMPLAZA SOLO ESTO */
+
+#bg-video{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-3;
+
+  /* MÁS VISIBLE */
+  opacity:0.45;
+
+  /* MENOS OSCURO */
+  filter:brightness(0.9) contrast(1.1);
+
+  pointer-events:none;
 }
 
-/* NAVBAR + SLIDEDOWN */
-.navbar{
-position:fixed;
-top:0;
-width:100%;
-height:var(--nav-h);
-padding:0 60px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:rgba(0,0,0,0.85);
-backdrop-filter:blur(10px);
-border-bottom:1px solid rgba(255,0,0,0.2);
-z-index:1000;
-animation:slideDown .35s ease;
+/* CAPA OSCURA MÁS SUAVE */
+body::after{
+  content:'';
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+
+  /* ANTES 0.55 */
+  background:rgba(0,0,0,0.25);
+
+  z-index:-2;
+  pointer-events:none;
+}
+/* CURSOR */
+#c-dot,#c-cross,#c-ring,#c-corners{position:fixed;left:-100px;top:-100px;pointer-events:none;}
+#c-dot{
+  z-index:10000;width:6px;height:6px;background:#e24b4a;border-radius:50%;
+  margin-left:-3px;margin-top:-3px;box-shadow:0 0 8px #e24b4a,0 0 16px rgba(226,75,74,0.4);
+}
+#c-cross{z-index:9999;width:24px;height:24px;margin-left:-12px;margin-top:-12px;}
+#c-cross::before,#c-cross::after{content:'';position:absolute;background:#e24b4a;}
+#c-cross::before{width:1px;height:100%;left:50%;margin-left:-0.5px;}
+#c-cross::after{width:100%;height:1px;top:50%;margin-top:-0.5px;}
+#c-ring{
+  z-index:9997;width:44px;height:44px;margin-left:-22px;margin-top:-22px;
+  border:1px solid rgba(226,75,74,0.5);
+  clip-path:polygon(14% 0%,86% 0%,100% 14%,100% 86%,86% 100%,14% 100%,0% 86%,0% 14%);
+  transition:width .12s,height .12s,margin .12s;
+}
+#c-corners{
+  z-index:9998;width:22px;height:22px;margin-left:-11px;margin-top:-11px;
+  transition:width .08s,height .08s,margin .08s;
+}
+#c-corners span{position:absolute;width:7px;height:7px;border-color:#e24b4a;border-style:solid;}
+#c-corners span:nth-child(1){top:0;left:0;border-width:1.5px 0 0 1.5px;}
+#c-corners span:nth-child(2){top:0;right:0;border-width:1.5px 1.5px 0 0;}
+#c-corners span:nth-child(3){bottom:0;left:0;border-width:0 0 1.5px 1.5px;}
+#c-corners span:nth-child(4){bottom:0;right:0;border-width:0 1.5px 1.5px 0;}
+.c-trail{
+  position:fixed;pointer-events:none;z-index:9995;border-radius:50%;background:#e24b4a;
+  margin-left:-1.5px;margin-top:-1.5px;left:-100px;top:-100px;
+}
+#c-coords{
+  position:fixed;bottom:16px;left:16px;font-size:11px;
+  color:rgba(226,75,74,0.55);letter-spacing:2px;pointer-events:none;z-index:9996;
 }
 
-@keyframes slideDown{
-from{
-transform:translateY(-100%);
-opacity:0;
+/* NAVBAR */
+.nav{
+  position:sticky;top:0;
+  background:rgba(6,6,8,0.92);
+  border-bottom:1px solid var(--border);
+  padding:0 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:68px;z-index:100;backdrop-filter:blur(14px);
 }
-to{
-transform:translateY(0);
-opacity:1;
+.logo-area{display:flex;align-items:center;gap:14px;}
+.logo-label{display:flex;flex-direction:column;gap:2px;}
+.logo-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--red);letter-spacing:2px;}
+.logo-sub{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.nav-links{display:flex;gap:4px;}
+.nav-link{
+  padding:8px 16px;font-size:13px;letter-spacing:1.5px;
+  color:var(--muted);text-decoration:none;border:1px solid transparent;
+  transition:all .2s;cursor:pointer;font-family:var(--mono);
 }
-}
+.nav-link:hover,.nav-link.active{color:var(--red);border-color:var(--border);}
+.nav-status{display:flex;align-items:center;gap:7px;font-size:12px;color:#3ddc97;letter-spacing:1px;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#3ddc97;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 
-/* LOGO */
-.logo{display:flex;align-items:center;gap:12px;}
-.logo img{width:45px;filter: drop-shadow(0 0 8px #ff3b3b);}
-.logo-text h2{color:var(--primary);}
-.logo-text p{font-size:12px;color:#aaa;}
-.logo-text span{font-size:11px;color:#777;}
+/* MAIN */
+.main{padding:48px 48px 80px;max-width:1100px;margin:auto;position:relative;z-index:1;}
 
-/* NAV */
-nav a{
-margin-left:25px;
-text-decoration:none;
-color:#aaa;
-transition:.2s;
+/* PAGE HEADER */
+.page-header{margin-bottom:48px;}
+.page-tag{font-size:12px;letter-spacing:3px;color:var(--red);margin-bottom:12px;opacity:.8;}
+.page-title{
+  font-family:'Orbitron',sans-serif;font-size:32px;font-weight:700;
+  color:var(--text);margin-bottom:10px;
 }
+.page-title span{color:var(--red);}
+.page-desc{font-size:13px;color:var(--muted);letter-spacing:.4px;line-height:1.8;}
 
-nav a:hover{color:var(--primary);}
-nav .active{color:var(--primary);}
-
-/* CONTENIDO */
-.semanas-container{
-padding-top:calc(var(--nav-h) + 30px);
-max-width:950px;
-margin:auto;
-padding-left:20px;
-padding-right:20px;
-}
-
-h1{
-text-align:center;
-margin-bottom:40px;
-color:var(--primary);
-}
+/* SECTION HEADER */
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.section-tag{font-size:11px;letter-spacing:3px;color:var(--muted);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border2);}
 
 /* UNIDADES */
-.unidad{
-margin-top:60px;
-padding-left:15px;
-border-left:3px solid rgba(255,59,59,0.3);
-transition:.2s;
-animation:fadeUp .4s ease;
+.unidad{margin-bottom:52px;}
+.unidad-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:20px;
+  padding:16px 20px;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-left:3px solid var(--red);
+  backdrop-filter:blur(8px);
+  position:relative;
+}
+.unidad-header::before{content:'';position:absolute;top:0;right:0;width:5px;height:5px;background:var(--red);}
+.unidad-num{
+  font-family:'Orbitron',sans-serif;font-size:28px;font-weight:700;
+  color:rgba(226,75,74,0.2);line-height:1;min-width:50px;
+}
+.unidad-info{}
+.unidad-label{font-size:10px;letter-spacing:2.5px;color:var(--muted);margin-bottom:3px;}
+.unidad-nombre{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--text);letter-spacing:1px;}
+
+/* SEMANAS GRID */
+.semanas-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
 
-.unidad:hover{
-border-left:3px solid var(--primary);
-transform:translateX(4px);
+/* CARD SEMANA */
+.card-semana{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  padding:16px;
+  cursor:none;
+  transition:all .2s;
+  position:relative;
+  overflow:hidden;
 }
-
-.unidad-numero{
-font-size:15px;
-color:#aaa;
-letter-spacing:2px;
-text-transform:uppercase;
+.card-semana::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--red);transform:scaleX(0);transition:.3s;transform-origin:left;
 }
-
-.unidad-nombre{
-font-size:30px;
-font-weight:700;
-color:var(--primary);
-margin-bottom:12px;
+.card-semana:hover{border-color:var(--border);transform:translateY(-2px);}
+.card-semana:hover::after{transform:scaleX(1);}
+.card-semana::before{content:'';position:absolute;top:0;left:0;width:4px;height:4px;background:var(--red);}
+.card-num{
+  font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;
+  color:rgba(226,75,74,0.18);margin-bottom:6px;
 }
-
-/* SEMANAS */
-.grid{
-display:flex;
-flex-direction:column;
-border-left:2px solid rgba(255,0,0,0.2);
-padding-left:15px;
-gap:8px;
+.card-label-sm{font-size:12px;color:var(--text);letter-spacing:.5px;margin-bottom:4px;}
+.card-files{font-size:11px;color:var(--muted);}
+.card-arrow{
+  position:absolute;bottom:14px;right:14px;
+  font-size:14px;color:var(--red);opacity:.5;transition:.2s;
 }
-
-.card{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px;
-cursor:pointer;
-border-radius:8px;
-transition:.2s;
-position:relative;
-}
-
-.card:hover{
-background:rgba(255,0,0,0.08);
-transform:translateX(5px);
-}
-
-.card::before{
-content:"";
-position:absolute;
-left:-15px;
-top:50%;
-transform:translateY(-50%);
-width:7px;
-height:7px;
-background:var(--primary);
-border-radius:50%;
-}
+.card-semana:hover .card-arrow{opacity:1;transform:translateX(2px);}
 
 /* MODAL */
 .modal{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.9);
-justify-content:center;
-align-items:center;
-opacity:0;
-transition:.15s ease;
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.85);
+  justify-content:center;align-items:center;z-index:2000;
+  backdrop-filter:blur(6px);
 }
-
-.modal.show{display:flex;opacity:1;}
-
-.modal-content{
-position:relative;
-background:#0f0f0f;
-padding:25px;
-width:60%;
-max-height:80vh;
-overflow-y:auto;
-border-radius:12px;
-border:1px solid rgba(255,0,0,0.25);
-transform:scale(0.92);
-transition:.15s ease;
+.modal.show{display:flex;}
+.modal-box{
+  background:#0a0a0e;
+  border:1px solid var(--border);
+  width:min(580px,92%);
+  max-height:80vh;overflow-y:auto;
+  position:relative;
+  animation:modalIn .18s ease;
 }
-
-.modal.show .modal-content{
-transform:scale(1);
+@keyframes modalIn{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+.modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 22px;
+  border-bottom:1px solid var(--border2);
+  background:rgba(226,75,74,0.05);
 }
-
-/* BOTÓN CERRAR */
-.close-btn{
-position:absolute;
-top:10px;
-right:10px;
-font-size:16px;
-color:var(--primary);
-cursor:pointer;
-padding:5px 8px;
-border-radius:6px;
-background:rgba(255,0,0,0.08);
-transition:.2s;
+.modal-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--red);letter-spacing:2px;}
+.modal-close{
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+  background:transparent;border:1px solid var(--border2);
+  padding:5px 10px;cursor:none;transition:all .2s;letter-spacing:1px;
 }
-
-.close-btn:hover{
-background:var(--primary);
-color:#000;
-}
-
-/* ARCHIVOS */
+.modal-close:hover{color:var(--red);border-color:var(--border);}
+.modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:8px;}
 .modal-item{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px;
-margin-bottom:8px;
-border-radius:8px;
-background:rgba(255,255,255,0.03);
-border:1px solid rgba(255,255,255,0.05);
-animation:fadeUp .25s ease forwards;
-opacity:0;
-transform:translateY(8px);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-left:2px solid var(--border);
+  transition:border-color .2s;
+  animation:fadeUp .2s ease both;
 }
+.modal-item:hover{border-left-color:var(--red);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.modal-item-name{font-size:13px;color:var(--text);letter-spacing:.3px;}
+.modal-btn{
+  font-family:var(--mono);font-size:11px;letter-spacing:1.5px;
+  padding:6px 14px;border:1px solid var(--border);
+  background:transparent;color:var(--red);cursor:none;transition:all .2s;
+  text-decoration:none;display:inline-block;
+}
+.modal-btn:hover{background:rgba(226,75,74,0.12);border-color:var(--red);}
 
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(20px);
+/* FOOTER */
+.footer{
+  border-top:1px solid var(--border2);padding:20px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--muted);letter-spacing:1.5px;
+  position:relative;z-index:1;
+  background:rgba(6,6,8,0.75);backdrop-filter:blur(10px);
 }
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
+.footer-red{color:var(--red);}
 
-.btn-ver{
-padding:5px 10px;
-border-radius:6px;
-background:rgba(255,59,59,0.15);
-color:var(--primary);
-text-decoration:none;
-transition:.2s;
+/* RESPONSIVE */
+@media(max-width:900px){
+  .semanas-grid{grid-template-columns:repeat(2,1fr);}
+  .nav{padding:14px 20px;flex-wrap:wrap;height:auto;gap:12px;}
+  .main{padding:32px 20px 60px;}
+  .footer{padding:16px 20px;flex-direction:column;gap:8px;text-align:center;}
+  body{cursor:auto;}
+  #c-dot,#c-cross,#c-ring,#c-corners,.c-trail,#c-coords{display:none;}
 }
-
-.btn-ver:hover{
-background:var(--primary);
-color:#000;
+@media(max-width:480px){
+  .semanas-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-links{display:none;}
+  .page-title{font-size:22px;}
 }
-
 </style>
 </head>
-
 <body>
 
+<!-- VIDEO FONDO -->
+<video id="bg-video" autoplay muted loop playsinline>
+  <source src="fondo_prueba.mp4" type="video/mp4">
+</video>
+<div class="bg-overlay"></div>
+
 <!-- CURSOR -->
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
+<div id="c-dot"></div>
+<div id="c-cross"></div>
+<div id="c-ring"></div>
+<div id="c-corners"><span></span><span></span><span></span><span></span></div>
+<div id="c-coords"></div>
 
-<header class="navbar">
-<div class="logo">
-<img src="logo.png">
-<div class="logo-text">
-<h2>Base de Datos II</h2>
-<p>Guadalupe Carbajal Emanuel</p>
-<span>UPLA - Huancayo</span>
-</div>
-</div>
-
-<nav>
-<a href="index.html">Inicio</a>
-<a href="#" class="active">Unidades</a>
-<a href="contacto.html">Contacto</a>
-<a href="login.html">Login</a>
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="logo-area">
+    <img src="logo.png" alt="Logo Universidad" style="height:42px;filter:drop-shadow(0 0 6px rgba(226,75,74,0.6));">
+    <div class="logo-label">
+      <div class="logo-title">BASE DE DATOS II</div>
+      <div class="logo-sub">REPOSITORIO ACADÉMICO</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">INICIO</a>
+    <a class="nav-link active" href="semanas.html">UNIDADES</a>
+    <a class="nav-link" href="contacto.html">CONTACTO</a>
+    <a class="nav-link" href="login.html">LOGIN</a>
+  </div>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    SISTEMA ACTIVO
+  </div>
 </nav>
-</header>
 
-<section class="semanas-container">
-<h1>Actividades por Semanas</h1>
-<div id="contenido"></div>
-</section>
+<!-- AGREGA ESTO DEBAJO DE <body> -->
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="prueba.mp4" type="video/mp4">
+      </video>
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-tag">// ACTIVIDADES_POR_SEMANAS</div>
+    <h1 class="page-title">UNIDADES DEL <span>CURSO</span></h1>
+    <p class="page-desc">Contenidos organizados por unidad y semana — Base de Datos II · UPLA Huancayo</p>
+  </div>
+
+  <div id="contenido"></div>
+
+</main>
+
+<footer class="footer">
+  <span>REPOSITORIO_ACADÉMICO — BASE DE DATOS II &copy; 2025</span>
+  <span class="footer-red" id="clock"></span>
+</footer>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-<div class="modal-content">
-<span class="close-btn" onclick="cerrarModal()">✖</span>
-<h2 id="tituloModal"></h2>
-<div id="linksModal"></div>
-</div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">SEMANA 01</div>
+      <button class="modal-close" onclick="cerrarModal()">✕ CERRAR</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
 </div>
 
 <script>
-
-/* CURSOR */
-const dot=document.querySelector(".cursor-dot");
-const outline=document.querySelector(".cursor-outline");
-
-document.addEventListener("mousemove",e=>{
-dot.style.left=e.clientX+"px";
-dot.style.top=e.clientY+"px";
-
-outline.style.left=e.clientX+"px";
-outline.style.top=e.clientY+"px";
-});
-
-/* DATA */
-const BASE_URL="https://cdn.jsdelivr.net/gh/GuadalupeEmanuel/BASE-DE-DATOS-II@main/";
+/* ── DATA ── */
+const BASE_URL = "https://cdn.jsdelivr.net/gh/GuadalupeEmanuel/BASE-DE-DATOS-II@main/";
 
 const semanas = {
-    
-1:[{nombre:"Arquitectura de Base de Datos",archivo:"semana1/semana11.pdf"}],
-2:[
-{nombre:"Análisis Técnico",archivo:"semana2/semana2.pdf"},
-{nombre:"Diagrama",archivo:"semana2/semana22.pdf"},
-{nombre:"Instalación de SQL",archivo:"semana2/semana222.pdf"},
-{nombre:"Diagrama 2",archivo:"semana2/semana2222.pdf"}
-],
-3:[
-{nombre:"Ejercicio 1",archivo:"semana3/semana3.pdf"},
-{nombre:"Ejercicio 2",archivo:"semana3/semana33.pdf"},
-{nombre:"aquitectura de base de datos y sus aplicaciones",archivo:"semana3/semana333.pdf"},
-],
-4:[
-{nombre:"arquitectura de base de datos y normalizacion",archivo:"semana4/semana4.pdf"},
-{nombre:"Boleta",archivo:"semana4/semana44.pdf"},
-],
-5:[
-{nombre:"resumen",archivo:"semana5/semana5.pdf"},
-{nombre:"normalizacion",archivo:"semana5/semana55.pdf"},
-],
-6:[{nombre:"Álgebra Relacional",archivo:"semana6/semana6.pdf"}],
-7:[{nombre:"SQL Básico",archivo:"semana7/semana7.pdf"}],
-8:[{nombre:"SQL Avanzado",archivo:"semana8/semana8.pdf"}],
-9:[{nombre:"Procedimientos",archivo:"semana9/semana9.pdf"}],
-10:[{nombre:"Triggers",archivo:"semana10/semana10.pdf"}],
-11:[{nombre:"Funciones",archivo:"semana11/semana11.pdf"}],
-12:[{nombre:"Transacciones",archivo:"semana12/semana12.pdf"}],
-13:[{nombre:"Seguridad",archivo:"semana13/semana13.pdf"}],
-14:[{nombre:"Optimización",archivo:"semana14/semana14.pdf"}],
-15:[{nombre:"Administración BD",archivo:"semana15/semana15.pdf"}],
-16:[{nombre:"Proyecto Final",archivo:"semana16/semana16.pdf"}]
+  1:[{nombre:"Arquitectura de Base de Datos",archivo:"semana1/semana11.pdf"}],
+  2:[
+    {nombre:"Análisis Técnico",archivo:"semana2/semana2.pdf"},
+    {nombre:"Diagrama",archivo:"semana2/semana22.pdf"},
+    {nombre:"Instalación de SQL",archivo:"semana2/semana222.pdf"},
+    {nombre:"Diagrama 2",archivo:"semana2/semana2222.pdf"}
+  ],
+  3:[
+    {nombre:"Ejercicio 1",archivo:"semana3/semana3.pdf"},
+    {nombre:"Ejercicio 2",archivo:"semana3/semana33.pdf"},
+    {nombre:"Arquitectura BD y sus aplicaciones",archivo:"semana3/semana333.pdf"}
+  ],
+  4:[
+    {nombre:"Arquitectura BD y Normalización",archivo:"semana4/semana4.pdf"},
+    {nombre:"Boleta",archivo:"semana4/semana44.pdf"}
+  ],
+  5:[
+    {nombre:"Resumen",archivo:"semana5/semana5.pdf"},
+    {nombre:"Normalización",archivo:"semana5/semana55.pdf"}
+  ],
+  6:[{nombre:"Álgebra Relacional",archivo:"semana6/semana6.pdf"}],
+  7:[{nombre:"SQL Básico",archivo:"semana7/semana7.pdf"}],
+  8:[{nombre:"SQL Avanzado",archivo:"semana8/semana8.pdf"}],
+  9:[{nombre:"Procedimientos",archivo:"semana9/semana9.pdf"}],
+  10:[{nombre:"Triggers",archivo:"semana10/semana10.pdf"}],
+  11:[{nombre:"Funciones",archivo:"semana11/semana11.pdf"}],
+  12:[{nombre:"Transacciones",archivo:"semana12/semana12.pdf"}],
+  13:[{nombre:"Seguridad",archivo:"semana13/semana13.pdf"}],
+  14:[{nombre:"Optimización",archivo:"semana14/semana14.pdf"}],
+  15:[{nombre:"Administración BD",archivo:"semana15/semana15.pdf"}],
+  16:[{nombre:"Proyecto Final",archivo:"semana16/semana16.pdf"}]
 };
 
-const unidades=[
-{nombre:"Arquitectura BD",inicio:1,fin:4},
-{nombre:"Diseño",inicio:5,fin:8},
-{nombre:"SQL",inicio:9,fin:12},
-{nombre:"Admin BD",inicio:13,fin:16}
+const unidades = [
+  {nombre:"ARQUITECTURA BD",inicio:1,fin:4},
+  {nombre:"DISEÑO",inicio:5,fin:8},
+  {nombre:"SQL",inicio:9,fin:12},
+  {nombre:"ADMINISTRACIÓN BD",inicio:13,fin:16}
 ];
 
-const cont=document.getElementById("contenido");
+/* ── RENDER ── */
+const cont = document.getElementById("contenido");
 
-unidades.forEach((u,i)=>{
-let html=`<div class="unidad">
-<div class="unidad-numero">Unidad ${i+1}</div>
-<div class="unidad-nombre">${u.nombre}</div>
-<div class="grid">`;
+unidades.forEach((u, i) => {
+  const numStr = String(i+1).padStart(2,'0');
+  let html = `
+  <div class="unidad">
+    <div class="section-head">
+      <div class="section-tag">// UNIDAD_${numStr}</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="unidad-header">
+      <div class="unidad-num">${numStr}</div>
+      <div class="unidad-info">
+        <div class="unidad-label">UNIDAD ${i+1} — SEMANAS ${u.inicio} AL ${u.fin}</div>
+        <div class="unidad-nombre">${u.nombre}</div>
+      </div>
+    </div>
+    <div class="semanas-grid">`;
 
-for(let s=u.inicio;s<=u.fin;s++){
-html+=`
-<div class="card" onclick="abrirModal(${s})">
-<h3>Semana ${s}</h3>
-<p>Ver archivos</p>
-</div>`;
-}
+  for(let s = u.inicio; s <= u.fin; s++){
+    const count = semanas[s] ? semanas[s].length : 0;
+    const sNum = String(s).padStart(2,'0');
+    html += `
+      <div class="card-semana" onclick="abrirModal(${s})">
+        <div class="card-num">${sNum}</div>
+        <div class="card-label-sm">SEMANA ${s}</div>
+        <div class="card-files">${count} archivo${count!==1?'s':''}</div>
+        <div class="card-arrow">›</div>
+      </div>`;
+  }
 
-html+=`</div></div>`;
-cont.innerHTML+=html;
+  html += `</div></div>`;
+  cont.innerHTML += html;
 });
 
-/* MODAL */
+/* ── MODAL ── */
 function abrirModal(semana){
-const modal=document.getElementById("modal");
-const links=document.getElementById("linksModal");
+  const modal = document.getElementById("modal");
+  const body  = document.getElementById("modal-body");
+  const title = document.getElementById("modal-title");
+  const sNum  = String(semana).padStart(2,'0');
 
-document.getElementById("tituloModal").innerText="Semana "+semana;
+  title.textContent = `// SEMANA_${sNum}`;
 
-let html="";
-semanas[semana].forEach((f,i)=>{
-html+=`
-<div class="modal-item" style="animation-delay:${i*0.05}s">
-<div>${f.nombre}</div>
-<a class="btn-ver" href="${BASE_URL+f.archivo}" target="_blank">Ver</a>
-</div>`;
-});
+  let html = "";
+  semanas[semana].forEach((f, i) => {
+    html += `
+    <div class="modal-item" style="animation-delay:${i*0.06}s">
+      <div class="modal-item-name">${f.nombre}</div>
+      <a class="modal-btn" href="${BASE_URL + f.archivo}" target="_blank">VER →</a>
+    </div>`;
+  });
 
-links.innerHTML=html;
-
-modal.classList.add("show");
-modal.style.display="flex";
+  body.innerHTML = html;
+  modal.classList.add("show");
 }
 
 function cerrarModal(){
-const modal=document.getElementById("modal");
-modal.classList.remove("show");
-setTimeout(()=>modal.style.display="none",150);
+  document.getElementById("modal").classList.remove("show");
 }
 
-window.onclick=e=>{
-if(e.target.id==="modal") cerrarModal();
-};
-
-document.addEventListener("keydown",e=>{
-if(e.key==="Escape") cerrarModal();
+window.addEventListener("click", e => {
+  if(e.target.id === "modal") cerrarModal();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") cerrarModal();
 });
 
+/* ── CURSOR ── */
+const cDot=document.getElementById('c-dot');
+const cCross=document.getElementById('c-cross');
+const cRing=document.getElementById('c-ring');
+const cCorners=document.getElementById('c-corners');
+const cCoords=document.getElementById('c-coords');
+let mx=-200,my=-200,rx=-200,ry=-200,cx2=-200,cy2=-200;
+
+const trails=[];
+const trailSizes=[3,2.6,2.2,1.8,1.4,1];
+const trailAlpha=[0.5,0.38,0.28,0.18,0.1,0.06];
+for(let i=0;i<6;i++){
+  const t=document.createElement('div');
+  t.className='c-trail';
+  t.style.width=trailSizes[i]+'px';
+  t.style.height=trailSizes[i]+'px';
+  t.style.opacity=trailAlpha[i];
+  t.style.marginLeft=(-trailSizes[i]/2)+'px';
+  t.style.marginTop=(-trailSizes[i]/2)+'px';
+  document.body.appendChild(t);
+  trails.push({el:t,x:-200,y:-200});
+}
+
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cDot.style.left=mx+'px'; cDot.style.top=my+'px';
+  cCross.style.left=mx+'px'; cCross.style.top=my+'px';
+  if(cCoords) cCoords.textContent='X:'+mx+' // Y:'+my;
+});
+document.addEventListener('mousedown',()=>{
+  cRing.style.width='28px'; cRing.style.height='28px';
+  cRing.style.marginLeft='-14px'; cRing.style.marginTop='-14px';
+  cCorners.style.width='14px'; cCorners.style.height='14px';
+  cCorners.style.marginLeft='-7px'; cCorners.style.marginTop='-7px';
+});
+document.addEventListener('mouseup',()=>{
+  cRing.style.width='44px'; cRing.style.height='44px';
+  cRing.style.marginLeft='-22px'; cRing.style.marginTop='-22px';
+  cCorners.style.width='22px'; cCorners.style.height='22px';
+  cCorners.style.marginLeft='-11px'; cCorners.style.marginTop='-11px';
+});
+function animate(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  cx2+=(mx-cx2)*.06; cy2+=(my-cy2)*.06;
+  cRing.style.left=rx+'px'; cRing.style.top=ry+'px';
+  cCorners.style.left=cx2+'px'; cCorners.style.top=cy2+'px';
+  trails[0].x+=(mx-trails[0].x)*.5; trails[0].y+=(my-trails[0].y)*.5;
+  trails[0].el.style.left=trails[0].x+'px'; trails[0].el.style.top=trails[0].y+'px';
+  for(let i=1;i<trails.length;i++){
+    trails[i].x+=(trails[i-1].x-trails[i].x)*.35;
+    trails[i].y+=(trails[i-1].y-trails[i].y)*.35;
+    trails[i].el.style.left=trails[i].x+'px';
+    trails[i].el.style.top=trails[i].y+'px';
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+document.querySelectorAll('*').forEach(el=>el.style.cursor='none');
+
+/* ── CLOCK ── */
+function tick(){
+  const t=new Date();
+  document.getElementById('clock').textContent=
+    t.toLocaleTimeString('es-PE',{hour12:false})+' — SISTEMA OPERATIVO';
+}
+tick(); setInterval(tick,1000);
 </script>
 
 </body>
