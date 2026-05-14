@@ -2,310 +2,448 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Contacto - Base de Datos II</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto — Base de Datos II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
-
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;}
-
 :root{
---primary:#ff3b3b;
---secondary:#ff8c00;
---text:#e5e5e5;
---nav-h:80px;
+  --red:#e24b4a;--red-dark:#a32d2d;
+  --bg:#060608;--surface:rgba(13,13,18,0.82);--surface2:rgba(19,19,26,0.88);
+  --border:rgba(226,75,74,0.25);--border2:rgba(226,75,74,0.12);
+  --text:#e8e8f0;--muted:#9a9ab8;
+  --mono:'Share Tech Mono',monospace;
 }
-
-/* 🌌 FONDO GAMER */
 body{
-font-family:'Segoe UI',sans-serif;
-background:
-radial-gradient(circle at 20% 20%, rgba(255,0,0,0.15), transparent 40%),
-radial-gradient(circle at 80% 30%, rgba(255,140,0,0.12), transparent 40%),
-#050505;
-color:var(--text);
-overflow-x:hidden;
-cursor:none;
+  font-family:var(--mono);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+  min-height:100vh;
 }
 
-/* 🔥 SOLO ANIMACIONES */
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(10px);
+/* VIDEO FONDO */
+#bg-video{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;z-index:-2;opacity:0.18;pointer-events:none;
 }
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes slideDown{
-from{
-transform:translateY(-100%);
-opacity:0;
-}
-to{
-transform:translateY(0);
-opacity:1;
-}
+.bg-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,0.06) 0%,rgba(6,6,8,0.9) 65%);
+  z-index:-1;pointer-events:none;
 }
 
-/* 🔴 CURSOR */
-.cursor-dot{
-width:8px;
-height:8px;
-background:var(--primary);
-border-radius:50%;
-position:fixed;
-transform:translate(-50%,-50%);
-pointer-events:none;
-z-index:9999;
-box-shadow:0 0 10px var(--primary);
+/* REEMPLAZA SOLO ESTO */
+
+#bg-video{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-3;
+
+  /* MÁS VISIBLE */
+  opacity:0.45;
+
+  /* MENOS OSCURO */
+  filter:brightness(0.9) contrast(1.1);
+
+  pointer-events:none;
 }
 
-.cursor-outline{
-width:30px;
-height:30px;
-border:2px solid rgba(255,59,59,0.6);
-border-radius:50%;
-position:fixed;
-transform:translate(-50%,-50%);
-pointer-events:none;
-z-index:9998;
-transition:0.08s ease;
+/* CAPA OSCURA MÁS SUAVE */
+body::after{
+  content:'';
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+
+  /* ANTES 0.55 */
+  background:rgba(0,0,0,0.25);
+
+  z-index:-2;
+  pointer-events:none;
+}
+/* SCANLINES */
+body::before{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+  pointer-events:none;z-index:0;
 }
 
-/* 🚀 NAVBAR (FIX REAL SIN SALTO) */
-.navbar{
-position:fixed;
-top:0;
-width:100%;
-height:var(--nav-h);
-padding:0 60px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:rgba(0,0,0,0.85);
-backdrop-filter:blur(10px);
-border-bottom:1px solid rgba(255,0,0,0.25);
-z-index:1000;
-
-/* 🔥 FIX IMPORTANTE */
-transform:translateY(-100%);
-opacity:0;
-animation:slideDown .5s ease forwards;
+/* CURSOR */
+#c-dot,#c-cross,#c-ring,#c-corners{position:fixed;left:-100px;top:-100px;pointer-events:none;}
+#c-dot{
+  z-index:10000;width:6px;height:6px;background:#e24b4a;border-radius:50%;
+  margin-left:-3px;margin-top:-3px;box-shadow:0 0 8px #e24b4a,0 0 16px rgba(226,75,74,0.4);
+}
+#c-cross{z-index:9999;width:24px;height:24px;margin-left:-12px;margin-top:-12px;}
+#c-cross::before,#c-cross::after{content:'';position:absolute;background:#e24b4a;}
+#c-cross::before{width:1px;height:100%;left:50%;margin-left:-0.5px;}
+#c-cross::after{width:100%;height:1px;top:50%;margin-top:-0.5px;}
+#c-ring{
+  z-index:9997;width:44px;height:44px;margin-left:-22px;margin-top:-22px;
+  border:1px solid rgba(226,75,74,0.5);
+  clip-path:polygon(14% 0%,86% 0%,100% 14%,100% 86%,86% 100%,14% 100%,0% 86%,0% 14%);
+  transition:width .12s,height .12s,margin .12s;
+}
+#c-corners{
+  z-index:9998;width:22px;height:22px;margin-left:-11px;margin-top:-11px;
+  transition:width .08s,height .08s,margin .08s;
+}
+#c-corners span{position:absolute;width:7px;height:7px;border-color:#e24b4a;border-style:solid;}
+#c-corners span:nth-child(1){top:0;left:0;border-width:1.5px 0 0 1.5px;}
+#c-corners span:nth-child(2){top:0;right:0;border-width:1.5px 1.5px 0 0;}
+#c-corners span:nth-child(3){bottom:0;left:0;border-width:0 0 1.5px 1.5px;}
+#c-corners span:nth-child(4){bottom:0;right:0;border-width:0 1.5px 1.5px 0;}
+.c-trail{
+  position:fixed;pointer-events:none;z-index:9995;border-radius:50%;background:#e24b4a;
+  margin-left:-1.5px;margin-top:-1.5px;left:-100px;top:-100px;
+}
+#c-coords{
+  position:fixed;bottom:16px;left:16px;font-size:11px;
+  color:rgba(226,75,74,0.55);letter-spacing:2px;pointer-events:none;z-index:9996;
 }
 
-/* LOGO */
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
+/* NAVBAR */
+.nav{
+  position:sticky;top:0;
+  background:rgba(6,6,8,0.92);
+  border-bottom:1px solid var(--border);
+  padding:0 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:68px;z-index:100;backdrop-filter:blur(14px);
+}
+.logo-area{display:flex;align-items:center;gap:14px;}
+.logo-label{display:flex;flex-direction:column;gap:2px;}
+.logo-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--red);letter-spacing:2px;}
+.logo-sub{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.nav-links{display:flex;gap:4px;}
+.nav-link{
+  padding:8px 16px;font-size:13px;letter-spacing:1.5px;
+  color:var(--muted);text-decoration:none;border:1px solid transparent;
+  transition:all .2s;cursor:pointer;font-family:var(--mono);
+}
+.nav-link:hover,.nav-link.active{color:var(--red);border-color:var(--border);}
+.nav-status{display:flex;align-items:center;gap:7px;font-size:12px;color:#3ddc97;letter-spacing:1px;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#3ddc97;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+/* MAIN */
+.main{
+  padding:48px 48px 80px;
+  max-width:680px;margin:auto;
+  position:relative;z-index:1;
 }
 
-.logo img{
-width:45px;
-filter: drop-shadow(0 0 10px #ff3b3b);
+/* PAGE HEADER */
+.page-tag{font-size:12px;letter-spacing:3px;color:var(--red);margin-bottom:12px;opacity:.8;}
+.page-title{
+  font-family:'Orbitron',sans-serif;font-size:30px;font-weight:700;
+  color:var(--text);margin-bottom:10px;
+}
+.page-title span{color:var(--red);}
+.page-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:40px;}
+
+/* FORM CARD */
+.form-card{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-top:2px solid var(--border);
+  padding:32px;
+  position:relative;
+  backdrop-filter:blur(10px);
+  animation:fadeUp .4s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.form-card::before{content:'';position:absolute;top:0;left:0;width:5px;height:5px;background:var(--red);}
+.form-card::after{content:'';position:absolute;bottom:0;right:0;width:5px;height:5px;background:var(--red);}
+
+.form-label{font-size:10px;letter-spacing:2.5px;color:var(--red);margin-bottom:8px;display:block;opacity:.8;}
+
+.form-group{margin-bottom:20px;}
+
+.form-input{
+  width:100%;padding:12px 16px;
+  background:rgba(8,8,12,0.9);
+  border:1px solid var(--border2);
+  color:var(--text);
+  font-family:var(--mono);font-size:13px;
+  outline:none;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--red);}
+.form-input::placeholder{color:rgba(154,154,184,0.4);font-size:12px;}
+
+textarea.form-input{
+  resize:vertical;min-height:120px;
+  line-height:1.7;
 }
 
-.logo-text h2{color:var(--primary);}
-.logo-text p{font-size:12px;color:#aaa;}
-.logo-text span{font-size:11px;color:#777;}
+/* ROW */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:500px){.form-row{grid-template-columns:1fr;}}
 
-/* MENU */
-nav a{
-margin-left:25px;
-text-decoration:none;
-color:#aaa;
-transition:.2s;
-position:relative;
+/* SUBMIT */
+.form-submit{
+  width:100%;padding:14px;
+  font-family:var(--mono);font-size:13px;letter-spacing:2.5px;
+  border:1px solid var(--red);background:var(--red);color:#fff;
+  cursor:none;transition:all .2s;margin-top:8px;
+  clip-path:polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px);
 }
+.form-submit:hover{background:var(--red-dark);}
 
-nav a:hover{color:var(--primary);}
-
-nav a::after{
-content:"";
-position:absolute;
-left:0;
-bottom:-5px;
-width:0%;
-height:2px;
-background:var(--primary);
-transition:.3s;
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:24px;}
+@media(max-width:500px){.info-grid{grid-template-columns:1fr;}}
+.info-box{
+  background:var(--surface2);border:1px solid var(--border2);
+  padding:14px 16px;
 }
+.info-icon{font-size:18px;margin-bottom:6px;}
+.info-label{font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:3px;opacity:.8;}
+.info-val{font-size:11px;color:var(--muted);}
 
-nav a:hover::after{width:100%;}
-
-/* CONTENEDOR */
-.container{
-width:50%;
-margin:140px auto 50px;
-background:rgba(15,15,15,0.75);
-backdrop-filter: blur(15px);
-padding:35px;
-border-radius:20px;
-border:1px solid rgba(255,59,59,0.2);
-box-shadow:0 0 25px rgba(255,59,59,0.25);
-text-align:center;
-
-opacity:0;
-animation:fadeUp .6s ease forwards;
-}
-
-/* TITULO */
-.titulo{
-color:var(--primary);
-font-size:30px;
-text-shadow:0 0 10px var(--primary);
-}
-
-.linea{
-width:80px;
-height:3px;
-background:var(--primary);
-margin:10px auto;
-border-radius:5px;
-}
-
-.descripcion{
-color:#ccc;
-margin-bottom:15px;
-}
-
-/* FORM */
-.form-group{
-text-align:left;
-margin-bottom:15px;
-}
-
-input, textarea{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:1px solid rgba(255,59,59,0.2);
-background:#0a0a0a;
-color:#fff;
-}
-
-/* BOTON */
-button{
-margin-top:15px;
-padding:12px 25px;
-border:none;
-border-radius:10px;
-background:linear-gradient(45deg,var(--primary),var(--secondary));
-cursor:pointer;
-}
-
-/* ALERTA */
+/* ALERTA MODAL */
 .alerta{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.85);
-justify-content:center;
-align-items:center;
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.85);
+  justify-content:center;align-items:center;z-index:3000;
+  backdrop-filter:blur(6px);
 }
-
+.alerta.show{display:flex;}
 .alerta-box{
-background:#111;
-padding:30px;
-border-radius:20px;
-text-align:center;
+  background:#0a0a0e;
+  border:1px solid var(--border);
+  padding:36px 40px;text-align:center;
+  position:relative;
+  animation:fadeUp .2s ease;
 }
+.alerta-box::before{content:'';position:absolute;top:0;left:0;width:5px;height:5px;background:var(--red);}
+.alerta-box::after{content:'';position:absolute;bottom:0;right:0;width:5px;height:5px;background:var(--red);}
+.alerta-icon{font-size:32px;margin-bottom:12px;}
+.alerta-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--red);letter-spacing:2px;margin-bottom:8px;}
+.alerta-msg{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.alerta-bar{
+  height:2px;background:rgba(226,75,74,0.15);margin-top:20px;
+}
+.alerta-progress{height:100%;background:var(--red);width:0%;animation:progress 2.5s linear forwards;}
+@keyframes progress{to{width:100%;}}
 
+/* FOOTER */
+.footer{
+  border-top:1px solid var(--border2);padding:20px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--muted);letter-spacing:1.5px;
+  position:relative;z-index:1;
+  background:rgba(6,6,8,0.75);backdrop-filter:blur(10px);
+}
+.footer-red{color:var(--red);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav{padding:14px 20px;flex-wrap:wrap;height:auto;gap:12px;}
+  .main{padding:32px 20px 60px;}
+  .footer{padding:16px 20px;flex-direction:column;gap:8px;text-align:center;}
+  body{cursor:auto;}
+  #c-dot,#c-cross,#c-ring,#c-corners,.c-trail,#c-coords{display:none;}
+}
+@media(max-width:480px){
+  .nav-links{display:none;}
+  .page-title{font-size:22px;}
+}
 </style>
 </head>
-
 <body>
 
-<div class="cursor-dot"></div>
-<div class="cursor-outline"></div>
+<!-- AGREGA ESTO DEBAJO DE <body> -->
 
-<header class="navbar">
+<video autoplay muted loop playsinline id="bg-video">
+  <source src="prueba.mp4" type="video/mp4">
+</video>
 
-<div class="logo">
-<img src="logo.png">
-<div class="logo-text">
-<h2>Base de Datos II</h2>
-<p>Guadalupe Carbajal Emanuel Gaddiel</p>
-<span>UPLA - Huancayo</span>
-</div>
-</div>
+<!-- CURSOR -->
+<div id="c-dot"></div>
+<div id="c-cross"></div>
+<div id="c-ring"></div>
+<div id="c-corners"><span></span><span></span><span></span><span></span></div>
+<div id="c-coords"></div>
 
-<nav>
-<a href="index.html">Inicio</a>
-<a href="semanas.html">Unidades</a>
-<a href="contacto.html">Contacto</a>
-<a href="login.html">Login</a>
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="logo-area">
+    <img src="logo.png" alt="Logo Universidad" style="height:42px;filter:drop-shadow(0 0 6px rgba(226,75,74,0.6));">
+    <div class="logo-label">
+      <div class="logo-title">BASE DE DATOS II</div>
+      <div class="logo-sub">REPOSITORIO ACADÉMICO</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">INICIO</a>
+    <a class="nav-link" href="semanas.html">UNIDADES</a>
+    <a class="nav-link active" href="contacto.html">CONTACTO</a>
+    <a class="nav-link" href="login.html">LOGIN</a>
+  </div>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    SISTEMA ACTIVO
+  </div>
 </nav>
 
-</header>
+<main class="main">
 
-<section class="container">
+  <div class="page-tag">// CONTACTO_SISTEMA</div>
+  <h1 class="page-title">ENVIAR <span>MENSAJE</span></h1>
+  <p class="page-desc">Canal de comunicación directo — Guadalupe Carbajal Emanuel · UPLA Huancayo</p>
 
-<div class="titulo">✉️ Contáctanos</div>
-<div class="linea"></div>
+  <div class="form-card">
 
-<form id="formulario">
+    <form id="formulario">
 
-<div class="form-group">
-<input type="text" placeholder="Nombre" required>
-</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">NOMBRE</label>
+          <input class="form-input" type="text" placeholder="Tu nombre completo" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">EMAIL</label>
+          <input class="form-input" type="email" placeholder="tu@email.com" required>
+        </div>
+      </div>
 
-<div class="form-group">
-<input type="email" placeholder="Email" required>
-</div>
+      <div class="form-group">
+        <label class="form-label">ASUNTO</label>
+        <input class="form-input" type="text" placeholder="Motivo del mensaje" required>
+      </div>
 
-<div class="form-group">
-<input type="text" placeholder="Asunto" required>
-</div>
+      <div class="form-group">
+        <label class="form-label">MENSAJE</label>
+        <textarea class="form-input" placeholder="Escribe tu mensaje aquí..." required></textarea>
+      </div>
 
-<div class="form-group">
-<textarea rows="4" placeholder="Mensaje" required></textarea>
-</div>
+      <button type="submit" class="form-submit">ENVIAR MENSAJE →</button>
 
-<button>Enviar</button>
+    </form>
 
-</form>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-icon">📍</div>
+        <div class="info-label">UBICACIÓN</div>
+        <div class="info-val">Huancayo, Perú</div>
+      </div>
+      <div class="info-box">
+        <div class="info-icon">🎓</div>
+        <div class="info-label">INSTITUCIÓN</div>
+        <div class="info-val">UPLA</div>
+      </div>
+      <div class="info-box">
+        <div class="info-icon">📚</div>
+        <div class="info-label">CURSO</div>
+        <div class="info-val">Base de Datos II</div>
+      </div>
+    </div>
 
-</section>
+  </div>
 
+</main>
+
+<footer class="footer">
+  <span>REPOSITORIO_ACADÉMICO — BASE DE DATOS II &copy; 2025</span>
+  <span class="footer-red" id="clock"></span>
+</footer>
+
+<!-- ALERTA -->
 <div id="alerta" class="alerta">
-<div class="alerta-box">
-<h3>Mensaje enviado</h3>
-<p>Respuesta en camino...</p>
-</div>
+  <div class="alerta-box">
+    <div class="alerta-icon">✔</div>
+    <div class="alerta-title">MENSAJE ENVIADO</div>
+    <div class="alerta-msg">Respuesta en camino...</div>
+    <div class="alerta-bar"><div class="alerta-progress"></div></div>
+  </div>
 </div>
 
 <script>
-
-const dot=document.querySelector(".cursor-dot");
-const outline=document.querySelector(".cursor-outline");
-
-document.addEventListener("mousemove",(e)=>{
-dot.style.left=e.clientX+"px";
-dot.style.top=e.clientY+"px";
-outline.style.left=e.clientX+"px";
-outline.style.top=e.clientY+"px";
+/* FORM */
+document.getElementById("formulario").addEventListener("submit", e => {
+  e.preventDefault();
+  const alerta = document.getElementById("alerta");
+  alerta.classList.add("show");
+  e.target.reset();
+  setTimeout(() => alerta.classList.remove("show"), 2600);
 });
 
-const form=document.getElementById("formulario");
+/* CURSOR */
+const cDot=document.getElementById('c-dot');
+const cCross=document.getElementById('c-cross');
+const cRing=document.getElementById('c-ring');
+const cCorners=document.getElementById('c-corners');
+const cCoords=document.getElementById('c-coords');
+let mx=-200,my=-200,rx=-200,ry=-200,cx2=-200,cy2=-200;
 
-form.addEventListener("submit",e=>{
-e.preventDefault();
-document.getElementById("alerta").style.display="flex";
-form.reset();
-
-setTimeout(()=>{
-document.getElementById("alerta").style.display="none";
-},2500);
+const trails=[];
+const trailSizes=[3,2.6,2.2,1.8,1.4,1];
+const trailAlpha=[0.5,0.38,0.28,0.18,0.1,0.06];
+for(let i=0;i<6;i++){
+  const t=document.createElement('div');
+  t.className='c-trail';
+  t.style.width=trailSizes[i]+'px';
+  t.style.height=trailSizes[i]+'px';
+  t.style.opacity=trailAlpha[i];
+  t.style.marginLeft=(-trailSizes[i]/2)+'px';
+  t.style.marginTop=(-trailSizes[i]/2)+'px';
+  document.body.appendChild(t);
+  trails.push({el:t,x:-200,y:-200});
+}
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cDot.style.left=mx+'px'; cDot.style.top=my+'px';
+  cCross.style.left=mx+'px'; cCross.style.top=my+'px';
+  if(cCoords) cCoords.textContent='X:'+mx+' // Y:'+my;
 });
+document.addEventListener('mousedown',()=>{
+  cRing.style.width='28px'; cRing.style.height='28px';
+  cRing.style.marginLeft='-14px'; cRing.style.marginTop='-14px';
+  cCorners.style.width='14px'; cCorners.style.height='14px';
+  cCorners.style.marginLeft='-7px'; cCorners.style.marginTop='-7px';
+});
+document.addEventListener('mouseup',()=>{
+  cRing.style.width='44px'; cRing.style.height='44px';
+  cRing.style.marginLeft='-22px'; cRing.style.marginTop='-22px';
+  cCorners.style.width='22px'; cCorners.style.height='22px';
+  cCorners.style.marginLeft='-11px'; cCorners.style.marginTop='-11px';
+});
+function animate(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  cx2+=(mx-cx2)*.06; cy2+=(my-cy2)*.06;
+  cRing.style.left=rx+'px'; cRing.style.top=ry+'px';
+  cCorners.style.left=cx2+'px'; cCorners.style.top=cy2+'px';
+  trails[0].x+=(mx-trails[0].x)*.5; trails[0].y+=(my-trails[0].y)*.5;
+  trails[0].el.style.left=trails[0].x+'px'; trails[0].el.style.top=trails[0].y+'px';
+  for(let i=1;i<trails.length;i++){
+    trails[i].x+=(trails[i-1].x-trails[i].x)*.35;
+    trails[i].y+=(trails[i-1].y-trails[i].y)*.35;
+    trails[i].el.style.left=trails[i].x+'px';
+    trails[i].el.style.top=trails[i].y+'px';
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+document.querySelectorAll('*').forEach(el=>el.style.cursor='none');
 
+/* CLOCK */
+function tick(){
+  const t=new Date();
+  document.getElementById('clock').textContent=
+    t.toLocaleTimeString('es-PE',{hour12:false})+' — SISTEMA OPERATIVO';
+}
+tick(); setInterval(tick,1000);
 </script>
 
 </body>
