@@ -217,11 +217,11 @@ body::before{
 .profile-card::before{content:'';position:absolute;top:0;left:0;width:5px;height:5px;background:var(--red);}
 .profile-card::after{content:'';position:absolute;bottom:0;right:0;width:5px;height:5px;background:var(--red);}
 
-/* === FOTO DE PERFIL: AJUSTADA PARA VERSE BIEN === */
+/* === FOTO DE PERFIL: RECTANGULAR, GRANDE, SE VE COMPLETA === */
 .avatar-photo{
-  width:110px;
-  height:110px;
-  border-radius:50%;
+  width:220px;
+  height:220px;
+  border-radius:10px;
   border:2px solid var(--red);
   margin:0 auto 14px;
   overflow:hidden;
@@ -234,13 +234,9 @@ body::before{
 .avatar-photo img{
   width:100%;
   height:100%;
-  object-fit:cover;
-  /* Si la cara sale cortada, ajusta este valor:
-     "center 20%" sube el encuadre, "center 50%" lo centra, "center 80%" lo baja */
-  object-position:center 25%;
-  /* Zoom leve para eliminar bordes/objetos no deseados de la foto original */
-  transform:scale(1.15);
-  transform-origin:center 25%;
+  /* "contain" muestra la foto COMPLETA sin recortarla */
+  object-fit:contain;
+  object-position:center;
   display:block;
 }
 .profile-name{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--text);margin-bottom:4px;letter-spacing:1px;}
